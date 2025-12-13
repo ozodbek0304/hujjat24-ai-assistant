@@ -9,11 +9,7 @@ export const Route = createFileRoute("/_main")({
 
 function MainLayout() {
     return (
-        <main
-            className={cn(
-                "mx-auto p-4 h-full overflow-y-auto   pt-20 flex flex-col pb-10",
-            )}
-        >
+        <main className={cn("mx-auto p-4 container")}>
             <Outlet />
         </main>
     )

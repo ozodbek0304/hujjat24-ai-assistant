@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Rocket, Sparkles } from "lucide-react"
 import { useState } from "react"
-import LoadingState from "./LoadingState"
-import GeneratedDocument from "./GeneratedDocument"
-import TopicInput from "./TopicInput"
-import DocumentTypeSelector from "./DocumentTypeSelector"
-import StyleSelector from "./StyleSelector"
+import DocumentTypeSelector from "./document-type-selector"
+import GeneratedDocument from "./generated-document"
+import LoadingState from "./loading-state"
+import StyleSelector from "./style-selector"
+import TopicInput from "./topic-input"
 
 const MainSection = () => {
     const [topic, setTopic] = useState("")
