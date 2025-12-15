@@ -3,6 +3,7 @@ import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import { TEMPLATE_CATEGORY, TEMPLATES } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import { usePost } from "@/hooks/usePost"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { BookOpen, FileText, Palette, Sparkles } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
@@ -54,12 +55,13 @@ const TadqiqotCreate = () => {
     >(TEMPLATES, { params: { search: searchTemplates } })
 
     const form = useForm<FormValues>()
-
     const { control, handleSubmit, watch } = form
 
-    const onSubmit = (data: FormValues) => {
-        console.log("Yuborildi:", data)
-        // API POST shu yerda
+    const { mutate, isPending } = usePost()
+
+    const onSubmit = (values: FormValues) => {
+        console.log("Yuborildi:", values)
+        mutate(TEMPLATES, values)
     }
 
     console.log(categories)
@@ -263,7 +265,10 @@ const TadqiqotCreate = () => {
 
                 {/* Submit Button */}
                 <div className="flex justify-center pt-4">
-                    <Button className="px-12 py-6 text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/25">
+                    <Button
+                        loading={isPending}
+                        className="px-12 py-6 text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/25"
+                    >
                         <Sparkles className="w-5 h-5 mr-2" />
                         Tadqiqot yaratish
                     </Button>
