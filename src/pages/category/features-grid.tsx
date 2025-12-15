@@ -11,6 +11,7 @@ const features = [
             "Ilmiy tadqiqotlar, maqolalar va hisobotlarni professional darajada tayyorlang. Barcha ma'lumotlar bilan.",
         illustration: <ResearchIllustration />,
         comingSoon: false,
+        href: "/tadqiqot",
     },
     {
         title: "Referat",
@@ -55,6 +56,7 @@ const FeaturesGrid = () => {
                         description={feature.description}
                         illustration={feature.illustration}
                         comingSoon={feature.comingSoon}
+                        href={feature.href}
                     />
                 ))}
             </div>
