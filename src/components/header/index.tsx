@@ -1,10 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router"
 import { ArrowLeft, FileText, Sparkles, Zap } from "lucide-react"
 import { Button } from "../ui/button"
+import { ThemeColorToggle } from "./color-toggle"
 const Header = () => {
     const { pathname } = useLocation()
     return (
-        <header className="border-b border-white/10 bg-[#0a0b14]/80 backdrop-blur-xl sticky top-0 z-50">
+        <header className="border-b border-border glass sticky top-0 z-50">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {pathname === "/" ?
                     <div className="flex items-center gap-3 group cursor-pointer">
@@ -26,7 +27,7 @@ const Header = () => {
                     </div>
                 :   <Link
                         to="/"
-                        className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+                        className="flex items-center gap-2 "
                     >
                         <ArrowLeft className="w-5 h-5" />
                         <span className="font-medium">Orqaga</span>
@@ -43,6 +44,7 @@ const Header = () => {
                 )}
 
                 <div className="flex items-center gap-3">
+                    <ThemeColorToggle />
                     <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
                         <Zap className="w-3.5 h-3.5 " />
                         <span className="text-xs font-medium ">Beta</span>
