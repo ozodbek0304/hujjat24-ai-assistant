@@ -11,7 +11,7 @@ const features = [
             "Ilmiy tadqiqotlar, maqolalar va hisobotlarni professional darajada tayyorlang. Barcha ma'lumotlar bilan.",
         illustration: <ResearchIllustration />,
         comingSoon: false,
-        href: "/tadqiqot",
+        href: "/create-presentation",
     },
     {
         title: "Referat",
@@ -38,7 +38,7 @@ const features = [
 
 const FeaturesGrid = () => {
     return (
-        <section className="w-full max-w-6xl mx-auto px-4 py-16">
+        <section className="w-full ">
             <div className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                     Ta'lim yordamchisi

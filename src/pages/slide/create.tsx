@@ -1,15 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Link } from "@tanstack/react-router"
-import {
-    ArrowLeft,
-    BookOpen,
-    FileText,
-    Palette,
-    Search,
-    Sparkles,
-} from "lucide-react"
+import { BookOpen, FileText, Palette, Search, Sparkles } from "lucide-react"
 import { useState } from "react"
 
 const templates = [
@@ -104,32 +96,7 @@ const SlideCreate = () => {
         selectedStyle !== null
 
     return (
-        <div className="min-h-screen bg-[#0a0b14] text-white">
-            {/* Header */}
-            <header className="border-b border-white/10 bg-[#0a0b14]/80 backdrop-blur-xl sticky top-0 z-50">
-                <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                    <Link
-                        to="/"
-                        className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
-                    >
-                        <ArrowLeft className="w-5 h-5" />
-                        <span className="font-medium">Orqaga</span>
-                    </Link>
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                            <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-xl font-bold">TadqiqotAI</span>
-                    </div>
-                    <Button
-                        variant="outline"
-                        className="border-violet-500/50 text-violet-400 hover:bg-violet-500/10 hover:text-violet-300"
-                    >
-                        Pro versiya
-                    </Button>
-                </div>
-            </header>
-
+        <div>
             {/* Hero */}
             <div className="text-center py-12 px-4">
                 <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -146,7 +113,7 @@ const SlideCreate = () => {
             </div>
 
             {/* Main Content */}
-            <div className="container mx-auto px-4 pb-16 space-y-12">
+            <div className=" space-y-12">
                 {/* Section 1: Mavzu */}
                 <section className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-white/10">
                     <div className="flex items-center gap-4 mb-6">
