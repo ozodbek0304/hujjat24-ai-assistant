@@ -16,7 +16,7 @@ const MainSection = () => {
         null,
     )
     const [isGenerating, setIsGenerating] = useState(false)
-
+ 
     return (
         <main>
             {/* Hero section */}

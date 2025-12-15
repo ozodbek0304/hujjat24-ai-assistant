@@ -8,9 +8,6 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ConfirmProvider } from "@/layouts/confirm"
-import { PromptProvider } from "@/layouts/prompt"
-import { PromptWithCauseProvider } from "@/layouts/prompt-with-causer"
 import { ThemeProvider } from "@/layouts/theme"
 import { ViewProvider } from "@/layouts/view"
 import { ModalProvider } from "@/providers/modal-provider"
@@ -23,6 +20,7 @@ export const Route = createRootRoute({
             page_size: search?.page_size ?? undefined,
         }
     },
+
     notFoundComponent: () => {
         return (
             <main className="grid place-items-center h-screen w-full bg-primary-foreground">
@@ -49,15 +47,10 @@ function RootComponent() {
     return (
         <ModalProvider>
             <ThemeProvider defaultTheme="dark" storageKey="theme">
-                <ConfirmProvider>
-                    <PromptProvider>
-                        <PromptWithCauseProvider>
-                            <ViewProvider>
-                                <Outlet />
-                            </ViewProvider>
-                        </PromptWithCauseProvider>
-                    </PromptProvider>
-                </ConfirmProvider>
+                <ViewProvider>
+                    <Outlet />
+                </ViewProvider>
+
                 <Toaster />
             </ThemeProvider>
             <ScrollRestoration getKey={(location) => location.pathname} />
