@@ -75,6 +75,7 @@
         "date-fns": "^4.1.0",
         "embla-carousel-autoplay": "^8.3.0",
         "embla-carousel-react": "^8.3.0",
+        "framer-motion": "^12.23.26",
         "google-libphonenumber": "^3.2.43",
         "list": "^2.0.19",
         "lodash.isequal": "^4.5.0",

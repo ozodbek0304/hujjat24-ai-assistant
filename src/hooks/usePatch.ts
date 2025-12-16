@@ -11,7 +11,7 @@ export const patchRequest = <T>(
     url: string,
     payload: T,
     config?: AxiosRequestConfig,
-) => axiosInstance.patch(`/${url}/`, payload, config).then((res) => res.data)
+) => axiosInstance.patch(`/${url}`, payload, config).then((res) => res.data)
 
 export const putRequest = <T>(
     url: string,

@@ -38,7 +38,7 @@ const features = [
 
 const FeaturesGrid = () => {
     return (
-        <section className="w-full ">
+        <section className="w-full mt-12">
             <div className="text-center mb-12">
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                     Ta'lim yordamchisi

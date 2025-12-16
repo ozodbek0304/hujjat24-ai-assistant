@@ -2,7 +2,7 @@ import axiosInstance from "@/services/axios-instance"
 import { useQuery, UseQueryOptions } from "@tanstack/react-query"
 import { AxiosRequestConfig } from "axios"
 
-const DEFAULT_STALE_TIME = 1000 * 5*60
+const DEFAULT_STALE_TIME = 1000 * 5 * 60
 
 export const buildQueryKey = (url: string, params?: Record<string, any>) => {
     const paramValues = Object.values(params || {}).filter(
@@ -19,7 +19,7 @@ export type UseGetArgs<TData = any, TQueryFnData = unknown, TError = any> = {
 }
 
 export const getRequest = (url: string, config?: AxiosRequestConfig) =>
-    axiosInstance.get(`/${url}/`, config).then((res) => res.data)
+    axiosInstance.get(`/${url}`, config).then((res) => res.data)
 
 export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
     url: string,

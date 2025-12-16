@@ -4,7 +4,7 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { AxiosRequestConfig } from "axios"
 
 export const deleteRequest = (url: string, config?: AxiosRequestConfig) =>
-    axiosInstance.delete(`/${url}/`, config).then((res) => res.data)
+    axiosInstance.delete(`/${url}`, config).then((res) => res.data)
 
 export const useDelete = (
     options?: Partial<UseMutationOptions<any, any, string>>,

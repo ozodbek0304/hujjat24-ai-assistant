@@ -1,22 +1,29 @@
 import ParamInput from "@/components/as-params/input"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
-import { TEMPLATE_CATEGORY, TEMPLATES } from "@/constants/api-endpoints"
+import {
+    TEMPLATE_CATEGORY,
+    TEMPLATES,
+    TEMPLATES_DONWLOAD,
+    TEMPLATES_GENERATE,
+} from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { usePost } from "@/hooks/usePost"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { BookOpen, FileText, Palette, Sparkles } from "lucide-react"
+import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
+import LoadingScreen from "./loading-screen"
 
 const imageStyles = [
     {
-        id: "realistic",
+        id: "photo",
         name: "Realistik",
         icon: "📷",
         description: "Haqiqiy fotosuratlarga o'xshash",
     },
     {
-        id: "illustration",
+        id: "vector",
         name: "Illustratsiya",
         icon: "🎨",
         description: "Chiroyli chizilgan rasmlar",
@@ -44,237 +51,298 @@ type FormValues = {
 }
 
 const TadqiqotCreate = () => {
+    const [loadingStep, setLoadingStep] = useState("")
+    const [uuid, setUuid] = useState("")
+    const [loadingProgress, setLoadingProgress] = useState(0)
+
     const search = useSearch({ from: "/_main/create-presentation" })
     const { category, search: searchTemplates } = search
     const navigate = useNavigate()
 
-    const { data: categories, isSuccess } =
+    const { data: categories = [], isSuccess } =
         useGet<TemplateCategory[]>(TEMPLATE_CATEGORY)
-    const { data: templates, isSuccess: isSuccessTemplate } = useGet<
+    const { data: templates = [], isSuccess: isSuccessTemplate } = useGet<
         Templates[]
     >(TEMPLATES, { params: { search: searchTemplates } })
+
+    const { data: response = [] } =
+        useGet<TemplateCategory[]>(`${TEMPLATES_DONWLOAD}/${uuid}`, {enabled:!!uuid})
 
     const form = useForm<FormValues>()
     const { control, handleSubmit, watch } = form
 
-    const { mutate, isPending } = usePost()
+    const { mutate, isPending } = usePost({
+        onSuccess: (data) => {
+            setUuid(data?.uuid)
+            setLoadingProgress(100)
+        },
+        onError: () => {
+            setLoadingProgress(0)
+        },
+    })
 
     const onSubmit = (values: FormValues) => {
-        console.log("Yuborildi:", values)
-        mutate(TEMPLATES, values)
+        startLoadingSteps()
+        mutate(TEMPLATES_GENERATE, values)
     }
 
-    console.log(categories)
+    const startLoadingSteps = () => {
+        const steps = [
+            { progress: 25, step: "Mavzu tahlil qilinmoqda..." },
+            { progress: 50, step: "AI kontent yaratmoqda..." },
+            { progress: 75, step: "Rasmlar generatsiya qilinmoqda..." },
+            { progress: 100, step: "Dizayn optimallashtirilmoqda..." },
+        ]
+
+        steps.forEach((item, index) => {
+            setTimeout(
+                () => {
+                    setLoadingProgress(item.progress)
+                    setLoadingStep(item.step)
+                },
+                (index + 1) * 1500,
+            )
+        })
+    }
+
+    console.log(response);
+    
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="text-foreground">
-            {/* Hero */}
-            <div className="text-center py-12 px-4">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                    AI bilan{" "}
-                    <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                        Tadqiqot
-                    </span>{" "}
-                    yarating
-                </h1>
-                <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-                    Professional ilmiy ishlaringizni sun'iy intellekt yordamida
-                    tez va sifatli tayyorlang
-                </p>
-            </div>
+        <>
+            <LoadingScreen
+                isVisible={isPending}
+                progress={loadingProgress}
+                currentStep={loadingStep}
+            />
 
-            {/* Main Content */}
-            <div className="container mx-auto px-4 pb-16 space-y-12">
-                {/* Section 1: Mavzu */}
-                <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
-                            1
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <FileText className="w-5 h-5 text-primary" />
-                                Mavzuni yozing
-                            </h2>
-                            <p className="text-muted-foreground text-sm">
-                                Tadqiqot mavzusini batafsil yozing
-                            </p>
-                        </div>
-                    </div>
-                    <FormTextarea
-                        methods={form}
-                        name="title"
-                        placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati, zamonaviy texnologiyalarning rivojlanishi..."
-                        className="min-h-[140px] text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
-                    />
-                </section>
+            <form onSubmit={handleSubmit(onSubmit)} className="text-foreground">
+                {/* Hero */}
+                <div className="text-center py-12 ">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                        AI bilan{" "}
+                        <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                            Tadqiqot
+                        </span>{" "}
+                        yarating
+                    </h1>
+                    <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+                        Professional ilmiy ishlaringizni sun'iy intellekt
+                        yordamida tez va sifatli tayyorlang
+                    </p>
+                </div>
 
-                {/* Section 2: Shablon */}
-                <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
-                            2
+                {/* Main Content */}
+                <div className="container mx-auto  pb-16 space-y-6 md:space-y-12">
+                    {/* Section 1: Mavzu */}
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                                1
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2">
+                                    <FileText className="w-5 h-5 text-primary" />
+                                    Mavzuni yozing
+                                </h2>
+                                <p className="text-muted-foreground text-sm">
+                                    Tadqiqot mavzusini batafsil yozing
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <BookOpen className="w-5 h-5 text-primary" />
-                                Shablonni tanlang
-                            </h2>
-                            <p className="text-muted-foreground text-sm">
-                                Tadqiqot uchun mos shablonni tanlang
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Search and Categories */}
-                    <div className="flex flex-col  gap-4 mb-6">
-                        <ParamInput
-                            fullWidth
-                            placeholder="Shablon qidirish..."
-                            className="pl-12 bg-secondary/50 md:w-1/2 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50"
+                        <FormTextarea
+                            methods={form}
+                            name="title"
+                            placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati, zamonaviy texnologiyalarning rivojlanishi..."
+                            className="min-h-[140px] text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                         />
-                        <div className="flex gap-2 flex-wrap">
-                            {isSuccess &&
-                                categories.map((cat) => (
-                                    <Button
-                                        key={cat.id}
-                                        onClick={() =>
-                                            navigate({
-                                                to: "/create-presentation",
-                                                search: { ...search, category },
-                                            })
-                                        }
-                                        className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                                            Number(category) === Number(cat) ?
-                                                "gradient-primary text-white"
-                                            :   "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
-                                        }`}
-                                    >
-                                        <span>{`${cat.name} (${cat.templates_count})`}</span>
-                                    </Button>
-                                ))}
-                        </div>
-                    </div>
+                    </section>
 
-                    <Controller
-                        name="template"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                {isSuccessTemplate &&
-                                    templates?.map((template) => (
-                                        <Button
-                                            key={template.id}
+                    {/* Section 2: Shablon */}
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                                2
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2">
+                                    <BookOpen className="w-5 h-5 text-primary" />
+                                    Shablonni tanlang
+                                </h2>
+                                <p className="text-muted-foreground text-sm">
+                                    Tadqiqot uchun mos shablonni tanlang
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Search and Categories */}
+                        <div className="flex flex-col  gap-4 mb-6">
+                            <ParamInput
+                                fullWidth
+                                placeholder="Shablon qidirish..."
+                                className="pl-12 bg-secondary/50 md:w-1/2 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50"
+                            />
+                            <div className="flex gap-2 flex-wrap">
+                                {isSuccess &&
+                                    categories.map((cat) => (
+                                        <button
+                                            type="button"
+                                            key={cat.id}
                                             onClick={() =>
-                                                field.onChange(template.id)
+                                                navigate({
+                                                    to: "/create-presentation",
+                                                    search: {
+                                                        ...search,
+                                                        category: String(
+                                                            cat.id,
+                                                        ),
+                                                    },
+                                                })
                                             }
-                                            className={`group relative overflow-hidden rounded-xl border-2 transition-all ${
-                                                field.value === template.id ?
-                                                    "border-primary ring-2 ring-primary/30"
-                                                :   "border-border hover:border-primary/50"
+                                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                                                (
+                                                    Number(category) ===
+                                                    Number(cat)
+                                                ) ?
+                                                    "gradient-primary text-white"
+                                                :   "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
                                             }`}
                                         >
-                                            <img
-                                                src={template.poster}
-                                                alt={template.name}
-                                                className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                            <div className="absolute bottom-0 left-0 right-0 p-4 text-left">
-                                                <span className="text-xs text-primary-foreground bg-primary/80 px-2 py-1 rounded-full backdrop-blur-sm">
-                                                    {template.category}
-                                                </span>
-                                                <h3 className="text-white font-semibold mt-2">
-                                                    {template.name}
-                                                </h3>
-                                            </div>
-                                            {watch("template") ===
-                                                template.id && (
-                                                <div className="absolute top-3 right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center shadow-lg">
-                                                    <svg
-                                                        className="w-4 h-4 text-white"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M5 13l4 4L19 7"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            )}
-                                        </Button>
+                                            <span>{`${cat.name} (${cat.templates_count})`}</span>
+                                        </button>
                                     ))}
                             </div>
-                        )}
-                    />
-                </section>
-
-                {/* Section 3: Rasm uslubi */}
-                <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
-                    <div className="flex items-center gap-4 mb-6">
-                        <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
-                            3
                         </div>
-                        <div>
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <Palette className="w-5 h-5 text-primary" />
-                                Rasm uslubini tanlang
-                            </h2>
-                            <p className="text-muted-foreground text-sm">
-                                Tadqiqotdagi rasmlar qanday ko'rinishda bo'lsin?
-                            </p>
-                        </div>
-                    </div>
 
-                    <Controller
-                        name="image_content_type"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {imageStyles.map((style) => (
-                                    <Button
-                                        key={style.id}
-                                        onClick={() => field.onChange(style.id)}
-                                        className={`p-5 rounded-xl border-2 transition-all text-center ${
-                                            field.value === style.id ?
-                                                "border-primary bg-accent ring-2 ring-primary/30"
-                                            :   "border-border bg-secondary/50 hover:border-primary/50 hover:bg-secondary"
-                                        }`}
-                                    >
-                                        <div className="text-4xl mb-3">
-                                            {style.icon}
-                                        </div>
-                                        <h3 className="font-semibold text-foreground">
-                                            {style.name}
-                                        </h3>
-                                        <p className="text-xs text-muted-foreground mt-1">
-                                            {style.description}
-                                        </p>
-                                    </Button>
-                                ))}
+                        <Controller
+                            name="template"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field }) => (
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    {isSuccessTemplate &&
+                                        templates?.map((template) => (
+                                            <button
+                                                type="button"
+                                                key={template.id}
+                                                onClick={() =>
+                                                    field.onChange(template.id)
+                                                }
+                                                className={`group relative overflow-hidden rounded-xl border-2 transition-all ${
+                                                    (
+                                                        field.value ===
+                                                        template.id
+                                                    ) ?
+                                                        "border-primary ring-2 ring-primary/30"
+                                                    :   "border-border hover:border-primary/50"
+                                                }`}
+                                            >
+                                                <img
+                                                    src={template.poster}
+                                                    alt={template.name}
+                                                    className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                                <div className="absolute bottom-0 left-0 right-0 p-4 text-left">
+                                                    <span className="text-xs text-primary-foreground bg-primary/80 px-2 py-1 rounded-full backdrop-blur-sm">
+                                                        {template.category}
+                                                    </span>
+                                                    <h3 className="text-white font-semibold mt-2">
+                                                        {template.name}
+                                                    </h3>
+                                                </div>
+                                                {watch("template") ===
+                                                    template.id && (
+                                                    <div className="absolute top-3 right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                                                        <svg
+                                                            className="w-4 h-4 text-white"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth={2}
+                                                                d="M5 13l4 4L19 7"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </button>
+                                        ))}
+                                </div>
+                            )}
+                        />
+                    </section>
+
+                    {/* Section 3: Rasm uslubi */}
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                                3
                             </div>
-                        )}
-                    />
-                </section>
+                            <div>
+                                <h2 className="text-xl font-bold flex items-center gap-2">
+                                    <Palette className="w-5 h-5 text-primary" />
+                                    Rasm uslubini tanlang
+                                </h2>
+                                <p className="text-muted-foreground text-sm">
+                                    Tadqiqotdagi rasmlar qanday ko'rinishda
+                                    bo'lsin?
+                                </p>
+                            </div>
+                        </div>
 
-                {/* Submit Button */}
-                <div className="flex justify-center pt-4">
-                    <Button
-                        loading={isPending}
-                        className="px-12 py-6 text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/25"
-                    >
-                        <Sparkles className="w-5 h-5 mr-2" />
-                        Tadqiqot yaratish
-                    </Button>
+                        <Controller
+                            name="image_content_type"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field }) => (
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    {imageStyles.map((style) => (
+                                        <button
+                                            type="button"
+                                            key={style.id}
+                                            onClick={() =>
+                                                field.onChange(style.id)
+                                            }
+                                            className={`p-5 rounded-xl border-2 transition-all text-center ${
+                                                field.value === style.id ?
+                                                    "border-primary bg-accent ring-2 ring-primary/30"
+                                                :   "border-border bg-secondary/50 hover:border-primary/50 hover:bg-secondary"
+                                            }`}
+                                        >
+                                            <div className="text-4xl mb-3">
+                                                {style.icon}
+                                            </div>
+                                            <h3 className="font-semibold text-foreground">
+                                                {style.name}
+                                            </h3>
+                                            <p className="text-xs text-muted-foreground mt-1">
+                                                {style.description}
+                                            </p>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        />
+                    </section>
+
+                    {/* Submit Button */}
+                    <div className="flex justify-center pt-4">
+                        <Button
+                            type="submit"
+                            loading={isPending}
+                            className="px-12 py-6 text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/25"
+                        >
+                            <Sparkles className="w-5 h-5 mr-2" />
+                            Tadqiqot yaratish
+                        </Button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </>
     )
 }
 
