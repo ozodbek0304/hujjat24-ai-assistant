@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
             refetchOnMount: false,
         },
     },
-})
+}) 
 
 const router = createRouter({
     routeTree,
