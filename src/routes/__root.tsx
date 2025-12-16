@@ -1,13 +1,10 @@
 import { Toaster } from "@/components/ui/sonner"
 import {
-    Link,
     Outlet,
     ScrollRestoration,
     createRootRoute,
 } from "@tanstack/react-router"
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { ThemeProvider } from "@/layouts/theme"
 import { ViewProvider } from "@/layouts/view"
 import { ModalProvider } from "@/providers/modal-provider"
@@ -19,27 +16,6 @@ export const Route = createRootRoute({
             page: search?.page ?? undefined,
             page_size: search?.page_size ?? undefined,
         }
-    },
-
-    notFoundComponent: () => {
-        return (
-            <main className="grid place-items-center h-screen w-full bg-primary-foreground">
-                <div className="shadow rounded-md p-4 flex flex-col gap-2">
-                    <Link to="/">
-                        <Button>Back to home page</Button>
-                    </Link>
-                    <Badge
-                        variant={"destructive"}
-                        className="text-center justify-center"
-                    >
-                        Not found
-                    </Badge>
-                    <Link to="/auth">
-                        <Button>Back to login page</Button>
-                    </Link>
-                </div>
-            </main>
-        )
     },
 })
 
