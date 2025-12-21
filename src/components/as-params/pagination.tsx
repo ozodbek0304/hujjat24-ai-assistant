@@ -90,7 +90,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
         )
 
 
-        console.log(pageNumbers);
+
         
     return (
         <div className="flex items-center gap-4">

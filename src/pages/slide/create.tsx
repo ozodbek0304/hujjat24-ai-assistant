@@ -9,12 +9,14 @@ import {
     TEMPLATE_CATEGORY,
     TEMPLATE_CATEGORY_VIEW,
     TEMPLATES,
+    TEMPLATES_DONWLOAD,
     TEMPLATES_GENERATE,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
 import { useWebSocket } from "@/hooks/useWebsocket"
+import { downloadExcel } from "@/lib/download-excel"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { BookOpen, Eye, FileText, Palette, Sparkles } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
@@ -71,11 +73,20 @@ const TadqiqotCreate = () => {
     const { category } = search
     const navigate = useNavigate()
 
+    const { data: dataDownload } = useGet(`${TEMPLATES_DONWLOAD}/${uuid}`, {
+        enabled: !!uuid,
+        config: {
+            responseType: "blob",
+        },
+    })
+
     const { data: categories = [], isSuccess } =
         useGet<TemplateCategory[]>(TEMPLATE_CATEGORY)
     const { data: templates, isSuccess: isSuccessTemplate } = useGet<
         ListResponse<Templates>
-    >(TEMPLATES, { params: { ...search, size: 8 } })
+    >(TEMPLATES, {
+        params: { ...search, size: 8 },
+    })
 
     const { data: templatesView } = useGet<string[]>(
         `${TEMPLATE_CATEGORY_VIEW}/${templateItem?.id}`,
@@ -88,12 +99,13 @@ const TadqiqotCreate = () => {
         defaultValues: { page_count: 10, language: "uz" },
     })
 
-    const { control, handleSubmit, reset } = form
+    const { control, handleSubmit, reset, watch } = form
 
     const { mutate, isPending } = usePost({
         onSuccess: (data) => {
             if (!data?.uuid) return
             setUuid(data.uuid)
+            downloadExcel({ data: dataDownload, name: watch("title") })
             reset()
         },
     })
