@@ -1,36 +1,25 @@
 import { Sparkles } from "lucide-react"
+import FeaturesGrid from "../category/features-grid"
 import { Project, ProjectCard } from "./card"
 
 const MainSection = () => {
     return (
-        <div>
+        <div className="space-y-6">
+            <FeaturesGrid />
             <section className=" overflow-hidden border-b border-border/50">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
                 <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
                 <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
-
-                <div className="container relative py-16 md:py-24">
-                    <div className="mx-auto max-w-3xl text-center">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
-                            <Sparkles className="h-4 w-4" />
-                            <span>AI yordamida yaratilgan ishlar</span>
-                        </div>
-
-                        <h1 className="text-4xl md:text-5xl  font-bold tracking-tight animate-slide-up">
-                            Mening Kolleksiyalalarim
-                        </h1>
-
-                        <p
-                            className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up"
-                            style={{ animationDelay: "100ms" }}
-                        >
-                            Hujjat24 AI intellekt vositalari yordamida yaratgan
-                            ishlarim to'plami
-                        </p>
-                    </div>
-                </div>
             </section>
+
             <section className="container pb-16">
+               <div className="flex justify-center">
+                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
+                    <Sparkles className="h-4 w-4" />
+                    <span>AI yordamida yaratilgan ishlar</span>
+                </div>
+
+               </div>
                 {projects.length > 0 ?
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {projects.map((project, index) => (

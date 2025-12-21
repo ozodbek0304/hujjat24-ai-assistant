@@ -18,6 +18,7 @@ const FeatureCard = ({
     href,
     className = "",
 }: FeatureCardProps) => {
+
     const cardContent = (
         <>
             {comingSoon && (
@@ -26,16 +27,18 @@ const FeatureCard = ({
                 </div>
             )}
             <div className="flex-shrink-0">{illustration}</div>
-            <div className="flex flex-col gap-2">
-                <h3 className="text-2xl font-bold text-foreground">{title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+            <div className="flex flex-col gap-1">
+                <h3 className="text-xl font-bold text-foreground">{title}</h3>
+                <p className="text-muted-foreground leading-relaxed text-sm">
                     {description}
                 </p>
             </div>
         </>
     )
 
-    const baseClasses = `relative bg-card rounded-2xl md:p-8 p-4  shadow border flex items-start gap-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${comingSoon ? "opacity-90 cursor-not-allowed" : "cursor-pointer"} ${className}`
+    
+
+    const baseClasses = `relative bg-card rounded-2xl z-10 p-4  shadow border flex flex-col items-start gap-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${comingSoon ? "opacity-90 cursor-not-allowed" : "cursor-pointer"} ${className}`
 
     if (href && !comingSoon) {
         return (

@@ -55,7 +55,7 @@ const TadqiqotCreate = () => {
     const [uuid, setUuid] = useState("")
     const [loadingProgress, setLoadingProgress] = useState(0)
 
-    const search = useSearch({ from: "/_main/create-presentation-generate" })
+    const search = useSearch({ from: "/_main/create-presentation" })
     const { category } = search
     const navigate = useNavigate()
 
@@ -150,10 +150,11 @@ const TadqiqotCreate = () => {
                             </div>
                         </div>
                         <FormTextarea
+                            required
                             methods={form}
                             name="title"
                             placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati, zamonaviy texnologiyalarning rivojlanishi..."
-                            className="min-h-[80px] text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                            className=" text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                         />
                     </section>
 

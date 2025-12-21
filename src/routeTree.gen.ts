@@ -18,9 +18,6 @@ import { Route as MainImport } from './routes/_main'
 // Create Virtual Routes
 
 const MainIndexLazyImport = createFileRoute('/_main/')()
-const MainCreatePresentationGenerateLazyImport = createFileRoute(
-  '/_main/create-presentation-generate',
-)()
 const MainCreatePresentationLazyImport = createFileRoute(
   '/_main/create-presentation',
 )()
@@ -36,16 +33,6 @@ const MainIndexLazyRoute = MainIndexLazyImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any).lazy(() => import('./routes/_main/index.lazy').then((d) => d.Route))
-
-const MainCreatePresentationGenerateLazyRoute =
-  MainCreatePresentationGenerateLazyImport.update({
-    path: '/create-presentation-generate',
-    getParentRoute: () => MainRoute,
-  } as any).lazy(() =>
-    import('./routes/_main/create-presentation-generate.lazy').then(
-      (d) => d.Route,
-    ),
-  )
 
 const MainCreatePresentationLazyRoute = MainCreatePresentationLazyImport.update(
   {
@@ -74,13 +61,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCreatePresentationLazyImport
       parentRoute: typeof MainImport
     }
-    '/_main/create-presentation-generate': {
-      id: '/_main/create-presentation-generate'
-      path: '/create-presentation-generate'
-      fullPath: '/create-presentation-generate'
-      preLoaderRoute: typeof MainCreatePresentationGenerateLazyImport
-      parentRoute: typeof MainImport
-    }
     '/_main/': {
       id: '/_main/'
       path: '/'
@@ -95,14 +75,11 @@ declare module '@tanstack/react-router' {
 
 interface MainRouteChildren {
   MainCreatePresentationLazyRoute: typeof MainCreatePresentationLazyRoute
-  MainCreatePresentationGenerateLazyRoute: typeof MainCreatePresentationGenerateLazyRoute
   MainIndexLazyRoute: typeof MainIndexLazyRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainCreatePresentationLazyRoute: MainCreatePresentationLazyRoute,
-  MainCreatePresentationGenerateLazyRoute:
-    MainCreatePresentationGenerateLazyRoute,
   MainIndexLazyRoute: MainIndexLazyRoute,
 }
 
@@ -111,13 +88,11 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/create-presentation': typeof MainCreatePresentationLazyRoute
-  '/create-presentation-generate': typeof MainCreatePresentationGenerateLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/create-presentation': typeof MainCreatePresentationLazyRoute
-  '/create-presentation-generate': typeof MainCreatePresentationGenerateLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
@@ -125,21 +100,15 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_main': typeof MainRouteWithChildren
   '/_main/create-presentation': typeof MainCreatePresentationLazyRoute
-  '/_main/create-presentation-generate': typeof MainCreatePresentationGenerateLazyRoute
   '/_main/': typeof MainIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/create-presentation' | '/create-presentation-generate' | '/'
+  fullPaths: '' | '/create-presentation' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/create-presentation' | '/create-presentation-generate' | '/'
-  id:
-    | '__root__'
-    | '/_main'
-    | '/_main/create-presentation'
-    | '/_main/create-presentation-generate'
-    | '/_main/'
+  to: '/create-presentation' | '/'
+  id: '__root__' | '/_main' | '/_main/create-presentation' | '/_main/'
   fileRoutesById: FileRoutesById
 }
 
@@ -170,16 +139,11 @@ export const routeTree = rootRoute
       "filePath": "_main.tsx",
       "children": [
         "/_main/create-presentation",
-        "/_main/create-presentation-generate",
         "/_main/"
       ]
     },
     "/_main/create-presentation": {
       "filePath": "_main/create-presentation.lazy.tsx",
-      "parent": "/_main"
-    },
-    "/_main/create-presentation-generate": {
-      "filePath": "_main/create-presentation-generate.lazy.tsx",
       "parent": "/_main"
     },
     "/_main/": {

@@ -11,7 +11,7 @@ const features = [
             "Ilmiy tadqiqotlar, maqolalar va hisobotlarni professional darajada tayyorlang. Barcha ma'lumotlar bilan.",
         illustration: <ResearchIllustration />,
         comingSoon: false,
-        href: "/create-presentation-generate",
+        href: "/create-presentation",
     },
     {
         title: "Referat",
@@ -48,7 +48,7 @@ const FeaturesGrid = () => {
                     vositalar bir joyda
                 </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2  gap-6">
                 {features.map((feature, index) => (
                     <FeatureCard
                         key={index}
