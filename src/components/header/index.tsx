@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router"
-import { ArrowLeft, FileText, Plus } from "lucide-react"
+import { ArrowLeft, FileText, Plus, Wallet } from "lucide-react"
 import { Button } from "../ui/button"
 import { ThemeColorToggle } from "./color-toggle"
 const Header = () => {
@@ -35,15 +35,12 @@ const Header = () => {
                 <div className="flex items-center gap-3">
                     <ThemeColorToggle />
                     <Button
-                        onClick={() => {
-                            navigate({ to: "/create-presentation" })
-                        }}
                         variant="gradient"
                         size="sm"
                         className="gap-2 text-white"
                     >
-                        <Plus className="w-4 h-4" />
-                        Create new
+                        <Wallet className="w-4 h-4" />
+                        20 000 so'm
                     </Button>
                 </div>
             </div>
