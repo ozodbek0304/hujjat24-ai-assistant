@@ -8,29 +8,26 @@ const features = [
     {
         title: "Tadqiqot",
         description:
-            "Ilmiy tadqiqotlar, maqolalar va hisobotlarni professional darajada tayyorlang. Barcha ma'lumotlar bilan.",
+            "Tez va professional tayyorlash.",
         illustration: <ResearchIllustration />,
         comingSoon: false,
         href: "/create-presentation",
     },
     {
         title: "Referat",
-        description:
-            "Har qanday mavzuda sifatli referatlar. To'liq ma'lumotlar, rasmlar va manbalar bilan.",
+        description: "Har qanday mavzuda tayyor va sifatli referatlar.",
         illustration: <EssayIllustration />,
         comingSoon: true,
     },
     {
         title: "Mustaqil ish",
-        description:
-            "Mustaqil ishlarni tez va sifatli bajarish. Kodlar, jadvallar va tushuntirishlar bilan.",
+        description: "Mustaqil ishlarni oson va tez bajarish.",
         illustration: <IndependentWorkIllustration />,
         comingSoon: true,
     },
     {
         title: "Test",
-        description:
-            "Testlar yarating va yechimlarni tekshiring. Ko'p tanlovli savollar va natijalar tahlili.",
+        description: "Testlar yaratish va natijalarni tekshirish.",
         illustration: <TestIllustration />,
         comingSoon: true,
     },
