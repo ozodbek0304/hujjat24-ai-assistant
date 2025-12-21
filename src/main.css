@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
     :root {
         --background: 0 0% 100%;
@@ -142,19 +141,19 @@
         backdrop-filter: blur(12px);
     }
 
-    .custom-scrollbar::-webkit-scrollbar {
+    *::-webkit-scrollbar {
         @apply h-[1px] w-[1px];
     }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
+    *::-webkit-scrollbar-track {
         @apply bg-background rounded-lg;
     }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
+    *::-webkit-scrollbar-thumb {
         @apply bg-border rounded-lg border-none;
     }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    *::-webkit-scrollbar-thumb:hover {
         @apply bg-border;
     }
 }
@@ -185,10 +184,10 @@
     @apply bg-primary text-primary-foreground;
 }
 
-.no-scrollbar-x::-webkit-scrollbar {
+*::-webkit-scrollbar {
     display: none;
 }
-.no-scrollbar-x {
+* {
     -ms-overflow-style: none; /* IE va Edge */
     scrollbar-width: none; /* Firefox */
 }

@@ -1,4 +1,5 @@
 export const TEMPLATE_CATEGORY = "common/pptx-categories"
+export const TEMPLATE_CATEGORY_VIEW = "common/pptx-templates-images"
 export const TEMPLATES = "common/pptx-templates"
 export const TEMPLATES_GENERATE = "services/presentation/generate"
 export const TEMPLATES_DONWLOAD = "services/presentation"

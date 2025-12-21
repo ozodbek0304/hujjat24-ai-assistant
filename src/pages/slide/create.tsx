@@ -1,18 +1,22 @@
 import ParamInput from "@/components/as-params/input"
 import ParamPagination from "@/components/as-params/pagination"
+import Modal from "@/components/custom/modal"
 import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
     TEMPLATE_CATEGORY,
+    TEMPLATE_CATEGORY_VIEW,
     TEMPLATES,
     TEMPLATES_GENERATE,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
 import { useWebSocket } from "@/hooks/useWebsocket"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { BookOpen, FileText, Palette, Sparkles } from "lucide-react"
+import { BookOpen, Eye, FileText, Palette, Sparkles } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import LoadingScreen from "./loading-screen"
@@ -57,7 +61,9 @@ const WS_URL = "wss://api.ai.hujjat24.uz/ws/1"
 
 const TadqiqotCreate = () => {
     const [uuid, setUuid] = useState<string | null>(null)
+    const [templateItem, setTemplateItem] = useState<Templates | null>(null)
     const [loadingProgress, setLoadingProgress] = useState(0)
+    const { openModal } = useModal("template-view")
 
     const intervalRef = useRef<any | null>(null)
 
@@ -70,6 +76,13 @@ const TadqiqotCreate = () => {
     const { data: templates, isSuccess: isSuccessTemplate } = useGet<
         ListResponse<Templates>
     >(TEMPLATES, { params: { ...search, page_size: 8 } })
+
+    const { data: templatesView } = useGet<string[]>(
+        `${TEMPLATE_CATEGORY_VIEW}/${templateItem?.id}`,
+        {
+            enabled: !!templateItem?.id,
+        },
+    )
 
     const form = useForm<FormValues>({
         defaultValues: { page_count: 10, language: "uz" },
@@ -244,7 +257,7 @@ const TadqiqotCreate = () => {
                                             id: 0,
                                             name: "Barchasi",
                                             templates_count:
-                                                categories.length || 0,
+                                                templates?.count || 0,
                                         },
                                         ...categories,
                                     ].map((cat) => (
@@ -311,8 +324,23 @@ const TadqiqotCreate = () => {
                                                             alt={template.name}
                                                             className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
                                                         />
+                                                        <Button
+                                                            size={"sm"}
+                                                            type="button"
+                                                            variant={"gradient"}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                openModal()
+                                                                setTemplateItem(
+                                                                    template,
+                                                                )
+                                                            }}
+                                                            className="absolute top-2 left-2 z-10 h-7 w-7 text-white"
+                                                        >
+                                                            <Eye size={18} />
+                                                        </Button>
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                                        <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2 text-left">
+                                                        <div className="absolute bottom-0 left-0 right-0 sm:p-3 p-2 text-left">
                                                             <span className="sm:text-xs text-[10px] text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
                                                                 {
                                                                     template.category
@@ -428,6 +456,32 @@ const TadqiqotCreate = () => {
                     </div>
                 </div>
             </form>
+
+            <Modal
+                size="max-w-4xl"
+                modalKey="template-view"
+                title={templateItem?.name}
+            >
+                <ScrollArea className="max-h-[80vh] ">
+                    {templatesView && templatesView?.length > 0 ?
+                        templatesView?.map((item, index) => (
+                            <div
+                                key={index}
+                                className="overflow-hidden rounded-lg mt-3"
+                            >
+                                <img
+                                    src={item}
+                                    alt={`Shablon-rasmi-${index}`}
+                                    className="w-full aspect-[4/3] object-cover "
+                                />
+                            </div>
+                        ))
+                    :   <div className="w-full h-64 flex items-center justify-center text-muted-foreground border border-dashed rounded-lg">
+                            Rasm mavjud emas
+                        </div>
+                    }
+                </ScrollArea>
+            </Modal>
         </>
     )
 }
