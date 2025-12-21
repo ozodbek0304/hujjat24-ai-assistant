@@ -10,6 +10,7 @@ export function ThemeColorToggle() {
             {theme === "light" ?
                 <Button
                     variant={"outline"}
+                    size={"sm"}
                     type="button"
                     className="m-[1px] flex items-center gap-2 w-full"
                     onClick={() => setTheme("dark")}
@@ -18,6 +19,7 @@ export function ThemeColorToggle() {
                 </Button>
             :   <Button
                     variant={"outline"}
+                    size={"sm"}
                     type="button"
                     className="m-[1px] flex items-center text-primary gap-2 w-full"
                     onClick={() => setTheme("light")}

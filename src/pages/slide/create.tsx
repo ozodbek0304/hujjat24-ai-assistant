@@ -55,18 +55,20 @@ const TadqiqotCreate = () => {
     const [uuid, setUuid] = useState("")
     const [loadingProgress, setLoadingProgress] = useState(0)
 
-    const search = useSearch({ from: "/_main/create-presentation" })
-    const { category, search: searchTemplates } = search
+    const search = useSearch({ from: "/_main/create-presentation-generate" })
+    const { category } = search
     const navigate = useNavigate()
 
     const { data: categories = [], isSuccess } =
         useGet<TemplateCategory[]>(TEMPLATE_CATEGORY)
     const { data: templates = [], isSuccess: isSuccessTemplate } = useGet<
         Templates[]
-    >(TEMPLATES, { params: { search: searchTemplates } })
+    >(TEMPLATES, { params: search })
 
-    const { data: response = [] } =
-        useGet<TemplateCategory[]>(`${TEMPLATES_DONWLOAD}/${uuid}`, {enabled:!!uuid})
+    const { data: response = [] } = useGet<TemplateCategory[]>(
+        `${TEMPLATES_DONWLOAD}/${uuid}`,
+        { enabled: !!uuid },
+    )
 
     const form = useForm<FormValues>()
     const { control, handleSubmit, watch } = form
@@ -105,9 +107,6 @@ const TadqiqotCreate = () => {
         })
     }
 
-    console.log(response);
-    
-
     return (
         <>
             <LoadingScreen
@@ -135,7 +134,7 @@ const TadqiqotCreate = () => {
                 {/* Main Content */}
                 <div className="container mx-auto  pb-16 space-y-6 md:space-y-12">
                     {/* Section 1: Mavzu */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 1
@@ -154,12 +153,12 @@ const TadqiqotCreate = () => {
                             methods={form}
                             name="title"
                             placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati, zamonaviy texnologiyalarning rivojlanishi..."
-                            className="min-h-[140px] text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                            className="min-h-[80px] text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                         />
                     </section>
 
                     {/* Section 2: Shablon */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 2
@@ -184,7 +183,15 @@ const TadqiqotCreate = () => {
                             />
                             <div className="flex gap-2 flex-wrap">
                                 {isSuccess &&
-                                    categories.map((cat) => (
+                                    [
+                                        {
+                                            id: 0,
+                                            name: "Barchasi",
+                                            templates_count:
+                                                categories.length || 0,
+                                        },
+                                        ...categories,
+                                    ].map((cat) => (
                                         <button
                                             type="button"
                                             key={cat.id}
@@ -201,8 +208,8 @@ const TadqiqotCreate = () => {
                                             }
                                             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                                                 (
-                                                    Number(category) ===
-                                                    Number(cat)
+                                                    Number(category || 0) ===
+                                                    Number(cat.id)
                                                 ) ?
                                                     "gradient-primary text-white"
                                                 :   "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
@@ -219,7 +226,7 @@ const TadqiqotCreate = () => {
                             control={control}
                             rules={{ required: true }}
                             render={({ field }) => (
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     {isSuccessTemplate &&
                                         templates?.map((template) => (
                                             <button
@@ -233,8 +240,8 @@ const TadqiqotCreate = () => {
                                                         field.value ===
                                                         template.id
                                                     ) ?
-                                                        "border-primary ring-2 ring-primary/30"
-                                                    :   "border-border hover:border-primary/50"
+                                                        "border-primary ring-2 ring-primary/50"
+                                                    :   "border-border hover:border-primary/70"
                                                 }`}
                                             >
                                                 <img
@@ -244,7 +251,7 @@ const TadqiqotCreate = () => {
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                                                 <div className="absolute bottom-0 left-0 right-0 p-4 text-left">
-                                                    <span className="text-xs text-primary-foreground bg-primary/80 px-2 py-1 rounded-full backdrop-blur-sm">
+                                                    <span className="text-xs text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
                                                         {template.category}
                                                     </span>
                                                     <h3 className="text-white font-semibold mt-2">
@@ -253,7 +260,7 @@ const TadqiqotCreate = () => {
                                                 </div>
                                                 {watch("template") ===
                                                     template.id && (
-                                                    <div className="absolute top-3 right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center shadow-lg">
+                                                    <div className="absolute top-3 right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center ">
                                                         <svg
                                                             className="w-4 h-4 text-white"
                                                             fill="none"
@@ -277,7 +284,7 @@ const TadqiqotCreate = () => {
                     </section>
 
                     {/* Section 3: Rasm uslubi */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 3
@@ -334,7 +341,7 @@ const TadqiqotCreate = () => {
                         <Button
                             type="submit"
                             loading={isPending}
-                            className="px-12 py-6 text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/25"
+                            className="px-12 py-6 text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed  shadow-primary/25"
                         >
                             <Sparkles className="w-5 h-5 mr-2" />
                             Tadqiqot yaratish

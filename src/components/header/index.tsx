@@ -1,8 +1,9 @@
-import { Link, useLocation } from "@tanstack/react-router"
-import { ArrowLeft, FileText, Sparkles, Zap } from "lucide-react"
+import { Link, useLocation, useNavigate } from "@tanstack/react-router"
+import { ArrowLeft, FileText, Plus, Sparkles } from "lucide-react"
 import { Button } from "../ui/button"
 import { ThemeColorToggle } from "./color-toggle"
 const Header = () => {
+    const navigate = useNavigate()
     const { pathname } = useLocation()
     return (
         <header className="border-b border-border glass sticky top-0 z-50">
@@ -25,10 +26,7 @@ const Header = () => {
                             <span className="text-xs font-mono  ml-1">AI</span>
                         </div>
                     </div>
-                :   <Link
-                        to="/"
-                        className="flex items-center gap-2 "
-                    >
+                :   <Link to="/" className="flex items-center gap-2 ">
                         <ArrowLeft className="w-5 h-5" />
                         <span className="font-medium">Orqaga</span>
                     </Link>
@@ -45,13 +43,16 @@ const Header = () => {
 
                 <div className="flex items-center gap-3">
                     <ThemeColorToggle />
-                    <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
-                        <Zap className="w-3.5 h-3.5 " />
-                        <span className="text-xs font-medium ">Beta</span>
-                    </div>
-                    <Button variant="gradient" size="sm" className="gap-2">
-                        <Sparkles className="w-4 h-4" />
-                        Pro versiya
+                    <Button
+                        onClick={() => {
+                            navigate({ to: "/create-presentation" })
+                        }}
+                        variant="gradient"
+                        size="sm"
+                        className="gap-2 text-white"
+                    >
+                        <Plus className="w-4 h-4" />
+                        Create new
                     </Button>
                 </div>
             </div>

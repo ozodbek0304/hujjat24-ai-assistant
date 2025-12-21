@@ -11,7 +11,7 @@ const features = [
             "Ilmiy tadqiqotlar, maqolalar va hisobotlarni professional darajada tayyorlang. Barcha ma'lumotlar bilan.",
         illustration: <ResearchIllustration />,
         comingSoon: false,
-        href: "/create-presentation",
+        href: "/create-presentation-generate",
     },
     {
         title: "Referat",
