@@ -1,5 +1,7 @@
+import TelegramWebApp from "@/components/auth/telegram-button"
 import Header from "@/components/header"
 import type { SEARCH_KEY } from "@/constants/default"
+import { useIsTelegram } from "@/hooks/useIsTelegram"
 import { cn } from "@/lib/utils"
 import { createFileRoute, Outlet } from "@tanstack/react-router"
 
@@ -9,6 +11,7 @@ export const Route = createFileRoute("/_main")({
 })
 
 function MainLayout() {
+    const isTelegram = useIsTelegram()
     return (
         <div className="w-full h-full overflow-y-auto">
             <div
@@ -25,6 +28,7 @@ function MainLayout() {
                 )}
             >
                 <Outlet />
+                {isTelegram && <TelegramWebApp />}
             </main>
         </div>
     )

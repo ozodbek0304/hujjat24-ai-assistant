@@ -26,7 +26,6 @@ function RootComponent() {
                 <ViewProvider>
                     <Outlet />
                 </ViewProvider>
-
                 <Toaster />
             </ThemeProvider>
             <ScrollRestoration getKey={(location) => location.pathname} />

@@ -1,7 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router"
-import { ArrowLeft, FileText, Wallet } from "lucide-react"
-import { Button } from "../ui/button"
+import { ArrowLeft, FileText } from "lucide-react"
 import { ThemeColorToggle } from "./color-toggle"
+import UserMenu from "./user-menu"
 const Header = () => {
     const { pathname } = useLocation()
     return (
@@ -36,14 +36,15 @@ const Header = () => {
 
                 <div className="flex items-center gap-3">
                     <ThemeColorToggle />
-                    <Button
+                    {/* <Button
                         variant="gradient"
                         size="sm"
                         className="gap-2 text-white"
                     >
                         <Wallet className="w-4 h-4" />
                         20 000 so'm
-                    </Button>
+                    </Button> */}
+                    <UserMenu />
                 </div>
             </div>
         </header>
