@@ -1,142 +1,209 @@
-import { Sparkles } from "lucide-react"
-import FeaturesGrid from "../category/features-grid"
-import { Project, ProjectCard } from "./card"
+import { AlertCircle, CheckCircle, Phone } from "lucide-react"
+import { useEffect, useState } from "react"
 
-const MainSection = () => {
+export default function TelegramWebApp() {
+    const [tg, setTg] = useState(null)
+    const [user, setUser] = useState(null)
+    const [status, setStatus] = useState("")
+    const [error, setError] = useState("")
+    const [isRegistered, setIsRegistered] = useState(false)
+
+    useEffect(() => {
+        // Telegram Web App SDK ni yuklash
+        const script = document.createElement("script")
+        script.src = "https://telegram.org/js/telegram-web-app.js"
+        script.async = true
+        document.body.appendChild(script)
+
+        script.onload = () => {
+            if (window.Telegram?.WebApp) {
+                const webApp = window.Telegram.WebApp
+                setTg(webApp)
+
+                // Web App ni to'liq kengaytirish
+                webApp.expand()
+
+                // Foydalanuvchi ma'lumotlarini olish
+                if (webApp.initDataUnsafe?.user) {
+                    setUser(webApp.initDataUnsafe.user)
+                }
+
+                // Main button ni sozlash
+                webApp.MainButton.text = "Telefon raqam yuborish"
+                webApp.MainButton.show()
+
+                // Main button bosilganda
+                webApp.MainButton.onClick(() => {
+                    requestPhoneNumber(webApp)
+                })
+            }
+        }
+
+        return () => {
+            if (document.body.contains(script)) {
+                document.body.removeChild(script)
+            }
+        }
+    }, [])
+
+    const requestPhoneNumber = (webApp) => {
+        try {
+            // Telegram Web App orqali telefon raqam so'rash
+            webApp.requestContact((result) => {
+                if (result) {
+                    setStatus("success")
+                    setIsRegistered(true)
+
+                    // Backend ga ma'lumot yuborish
+                    sendToBackend({
+                        userId: user?.id,
+                        username: user?.username,
+                        firstName: user?.first_name,
+                        lastName: user?.last_name,
+                        phone: result.responseUnsafe?.contact?.phone_number,
+                        chatId: webApp.initDataUnsafe?.user?.id,
+                    })
+
+                    webApp.showAlert(
+                        "Telefon raqamingiz muvaffaqiyatli yuborildi!",
+                    )
+                } else {
+                    setError("Telefon raqam yuborilmadi")
+                }
+            })
+        } catch (err) {
+            setError("Xatolik yuz berdi: " + err.message)
+        }
+    }
+
+    const sendToBackend = async (data) => {
+        try {
+            // Bu yerda backend API ga so'rov yuboriladi
+            console.log("Backend ga yuborilayotgan ma'lumot:", data)
+
+            // Misol uchun:
+            // const response = await fetch('YOUR_BACKEND_URL/api/register', {
+            //   method: 'POST',
+            //   headers: { 'Content-Type': 'application/json' },
+            //   body: JSON.stringify(data)
+            // });
+
+            setStatus("Ma'lumotlar saqlandi")
+        } catch (err) {
+            setError("Backend xatosi: " + err.message)
+        }
+    }
+
+    const handleManualRequest = () => {
+        if (tg) {
+            requestPhoneNumber(tg)
+        }
+    }
+
     return (
-        <div className="space-y-6">
-            <FeaturesGrid />
-
-            <section className="container ">
-                <div className="flex justify-center sm:py-5 py-3">
-                    <div className="flex items-center gap-2 sm:text-3xl text-xl font-medium sm:font-semibold sm:mb-6 mb-4">
-                        <Sparkles className="sm:h-8 sm:w-8 h-6 w-6 text-primary" />
-                        <span>AI yordamida yaratilgan ishlar</span>
-                    </div>
-                </div>
-                {projects.length > 0 ?
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2 sm:gap-4">
-                        {projects.map((project, index) => (
-                            <ProjectCard
-                                key={project.id}
-                                project={project}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                :   <div className="py-20 text-center">
-                        <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
-                            <Sparkles className="h-8 w-8 text-muted-foreground" />
+        <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-4">
+            <div className="max-w-md mx-auto mt-10">
+                <div className="bg-white rounded-3xl shadow-2xl p-8">
+                    {/* Header */}
+                    <div className="text-center mb-8">
+                        <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-4">
+                            <Phone className="w-10 h-10 text-blue-600" />
                         </div>
-                        <h3 className="text-lg font-semibold text-foreground">
-                            Ishlar topilmadi
-                        </h3>
-                        <p className="mt-2 text-muted-foreground">
-                            Qidiruv so'rovingizga mos ishlar mavjud emas
+                        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                            Xush kelibsiz!
+                        </h1>
+                        <p className="text-gray-600">
+                            Ro'yxatdan o'tish uchun telefon raqamingizni
+                            yuboring
                         </p>
                     </div>
-                }
-            </section>
+
+                    {/* User Info */}
+                    {user && (
+                        <div className="bg-blue-50 rounded-2xl p-4 mb-6">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                    {user.first_name?.[0] || "U"}
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-gray-800">
+                                        {user.first_name} {user.last_name || ""}
+                                    </p>
+                                    {user.username && (
+                                        <p className="text-sm text-gray-600">
+                                            @{user.username}
+                                        </p>
+                                    )}
+                                    <p className="text-xs text-gray-500">
+                                        ID: {user.id}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Status Messages */}
+                    {status === "success" && (
+                        <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-start space-x-3">
+                            <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                                <p className="font-semibold text-green-800">
+                                    Muvaffaqiyatli!
+                                </p>
+                                <p className="text-sm text-green-700">
+                                    Telefon raqamingiz qabul qilindi va
+                                    saqlandi.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-start space-x-3">
+                            <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                                <p className="font-semibold text-red-800">
+                                    Xatolik
+                                </p>
+                                <p className="text-sm text-red-700">{error}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Action Button */}
+                    {!isRegistered && (
+                        <button
+                            onClick={handleManualRequest}
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center space-x-2"
+                        >
+                            <Phone className="w-5 h-5" />
+                            <span>Telefon raqam yuborish</span>
+                        </button>
+                    )}
+
+                    {isRegistered && (
+                        <div className="text-center">
+                            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                                <CheckCircle className="w-8 h-8 text-green-600" />
+                            </div>
+                            <p className="text-lg font-semibold text-gray-800">
+                                Ro'yxatdan o'tdingiz!
+                            </p>
+                            <p className="text-gray-600 mt-2">
+                                Endi xizmatlarimizdan foydalanishingiz mumkin.
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Info */}
+                    <div className="mt-6 pt-6 border-t border-gray-200">
+                        <p className="text-xs text-gray-500 text-center">
+                            Telefon raqamingiz xavfsiz saqlanadi va faqat
+                            autentifikatsiya uchun ishlatiladi.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
-
-export default MainSection
-
-const projects: Project[] = [
-    {
-        id: "1",
-        title: "Sun'iy intellekt asoslari",
-        description:
-            "Sun'iy intellektning tarixi, turlari va kelajakdagi istiqbollari haqida keng qamrovli kurs ishi",
-        category: "kurs",
-        thumbnail:
-            "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop&q=60",
-        date: "2024-12-15",
-        views: 156,
-        aiTool: "ChatGPT",
-    },
-    {
-        id: "2",
-        title: "Biznes strategiyasi prezentatsiyasi",
-        description:
-            "Kompaniya uchun 2025 yilgi strategik reja va maqsadlar to'plami",
-        category: "prezentatsiya",
-        thumbnail:
-            "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&auto=format&fit=crop&q=60",
-        date: "2024-12-10",
-        views: 234,
-        aiTool: "Gamma AI",
-    },
-    {
-        id: "3",
-        title: "E-commerce mobil ilovasi",
-        description: "Online do'kon uchun zamonaviy UI/UX dizayn konsepti",
-        category: "dizayn",
-        thumbnail:
-            "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&auto=format&fit=crop&q=60",
-        date: "2024-12-08",
-        views: 412,
-        aiTool: "Midjourney",
-    },
-    {
-        id: "4",
-        title: "Bozor tahlili - IT sektor",
-        description:
-            "O'zbekistondagi IT bozorining 2024 yildagi holati va tendentsiyalari tahlili",
-        category: "tahlil",
-        thumbnail:
-            "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60",
-        date: "2024-12-05",
-        views: 189,
-        aiTool: "Claude AI",
-    },
-    {
-        id: "5",
-        title: "Startup inkubatori loyihasi",
-        description:
-            "Yoshlar uchun texnologik startup inkubator tashkil etish bo'yicha loyiha",
-        category: "loyiha",
-        thumbnail:
-            "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&fit=crop&q=60",
-        date: "2024-12-01",
-        views: 298,
-        aiTool: "ChatGPT",
-    },
-    {
-        id: "6",
-        title: "Marketing kampaniyasi",
-        description:
-            "Raqamli marketing strategiyasi va ijtimoiy tarmoqlarda reklama rejasi",
-        category: "prezentatsiya",
-        thumbnail:
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=60",
-        date: "2024-11-28",
-        views: 345,
-        aiTool: "Gamma AI",
-    },
-    {
-        id: "7",
-        title: "Machine Learning asoslari",
-        description:
-            "Mashinaviy o'rganish algoritmlari va ularning amaliy qo'llanilishi",
-        category: "kurs",
-        thumbnail:
-            "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&auto=format&fit=crop&q=60",
-        date: "2024-11-25",
-        views: 267,
-        aiTool: "ChatGPT",
-    },
-    {
-        id: "8",
-        title: "Brend identifikatsiyasi",
-        description:
-            "Yangi brendni yaratish uchun logo, ranglar va vizual uslub qo'llanmasi",
-        category: "dizayn",
-        thumbnail:
-            "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop&q=60",
-        date: "2024-11-20",
-        views: 523,
-        aiTool: "DALL-E",
-    },
-]
