@@ -1,4 +1,5 @@
 import ParamInput from "@/components/as-params/input"
+import ParamPagination from "@/components/as-params/pagination"
 import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
@@ -66,9 +67,9 @@ const TadqiqotCreate = () => {
 
     const { data: categories = [], isSuccess } =
         useGet<TemplateCategory[]>(TEMPLATE_CATEGORY)
-    const { data: templates = [], isSuccess: isSuccessTemplate } = useGet<
-        Templates[]
-    >(TEMPLATES, { params: search })
+    const { data: templates, isSuccess: isSuccessTemplate } = useGet<
+        ListResponse<Templates>
+    >(TEMPLATES, { params: { ...search, page_size: 8 } })
 
     const form = useForm<FormValues>({
         defaultValues: { page_count: 10, language: "uz" },
@@ -276,67 +277,89 @@ const TadqiqotCreate = () => {
                             </div>
                         </div>
 
-                        <Controller
-                            name="template"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field }) => (
-                                <div className="grid grid-cols-2 md:grid-cols-4 sm:gap-4 gap-2">
-                                    {isSuccessTemplate &&
-                                        templates?.map((template) => (
-                                            <button
-                                                type="button"
-                                                key={template.id}
-                                                onClick={() =>
-                                                    field.onChange(template.id)
-                                                }
-                                                className={`group relative overflow-hidden rounded-xl border-2 transition-all ${
-                                                    (
-                                                        field.value ===
-                                                        template.id
-                                                    ) ?
-                                                        "border-primary ring-2 ring-primary/50"
-                                                    :   "border-border hover:border-primary/70"
-                                                }`}
-                                            >
-                                                <img
-                                                    src={template.poster}
-                                                    alt={template.name}
-                                                    className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                                <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2 text-left">
-                                                    <span className="sm:text-xs text-[10px] text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
-                                                        {template.category}
-                                                    </span>
+                        <>
+                            <Controller
+                                name="template"
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field }) => (
+                                    <div className="grid grid-cols-2 md:grid-cols-4 sm:gap-4 gap-2">
+                                        {isSuccessTemplate &&
+                                            templates?.results?.map(
+                                                (template) => (
+                                                    <button
+                                                        type="button"
+                                                        key={template.id}
+                                                        onClick={() =>
+                                                            field.onChange(
+                                                                template.id,
+                                                            )
+                                                        }
+                                                        className={`group relative overflow-hidden rounded-xl border-2 transition-all ${
+                                                            (
+                                                                field.value ===
+                                                                template.id
+                                                            ) ?
+                                                                "border-primary ring-2 ring-primary/50"
+                                                            :   "border-border hover:border-primary/70"
+                                                        }`}
+                                                    >
+                                                        <img
+                                                            src={
+                                                                template.poster
+                                                            }
+                                                            alt={template.name}
+                                                            className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                                        <div className="absolute bottom-0 left-0 right-0 sm:p-4 p-2 text-left">
+                                                            <span className="sm:text-xs text-[10px] text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
+                                                                {
+                                                                    template.category
+                                                                }
+                                                            </span>
 
-                                                    <h3 className="text-white sm:font-semibold sm:mt-2 mt-1">
-                                                        {template.name}
-                                                    </h3>
-                                                </div>
-                                                {watch("template") ===
-                                                    template.id && (
-                                                    <div className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center ">
-                                                        <svg
-                                                            className="w-4 h-4 text-white"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth={2}
-                                                                d="M5 13l4 4L19 7"
-                                                            />
-                                                        </svg>
-                                                    </div>
-                                                )}
-                                            </button>
-                                        ))}
-                                </div>
-                            )}
-                        />
+                                                            <h3 className="text-white sm:font-semibold sm:mt-2 mt-1">
+                                                                {template.name}
+                                                            </h3>
+                                                        </div>
+                                                        {watch("template") ===
+                                                            template.id && (
+                                                            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center ">
+                                                                <svg
+                                                                    className="w-4 h-4 text-white"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    viewBox="0 0 24 24"
+                                                                >
+                                                                    <path
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        strokeWidth={
+                                                                            2
+                                                                        }
+                                                                        d="M5 13l4 4L19 7"
+                                                                    />
+                                                                </svg>
+                                                            </div>
+                                                        )}
+                                                    </button>
+                                                ),
+                                            )}
+                                    </div>
+                                )}
+                            />
+
+                            {isSuccessTemplate &&
+                                Number(templates?.count) > 8 && (
+                                    <div className="flex  mt-4 sm:mt-6 justify-center">
+                                        <ParamPagination
+                                            totalPages={templates?.pages}
+                                            changePageSize={false}
+                                        />
+                                    </div>
+                                )}
+                        </>
                     </section>
 
                     {/* Section 3: Rasm uslubi */}

@@ -9,19 +9,19 @@ export function ThemeColorToggle() {
         <div className="flex items-center gap-2 w-full">
             {theme === "light" ?
                 <Button
-                    variant={"outline"}
+                    variant={"ghost"}
                     size={"sm"}
                     type="button"
-                    className="m-[1px] flex items-center gap-2 w-full"
+                    className="m-[1px] flex items-center gap-2 w-full rounded-sm"
                     onClick={() => setTheme("dark")}
                 >
                     <Moon width={20} />
                 </Button>
             :   <Button
-                    variant={"outline"}
+                    variant={"ghost"}
                     size={"sm"}
                     type="button"
-                    className="m-[1px] flex items-center text-primary gap-2 w-full"
+                    className="m-[1px] flex items-center  gap-2 w-full rounded-sm"
                     onClick={() => setTheme("light")}
                 >
                     <Sun width={20} />

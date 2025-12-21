@@ -33,7 +33,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
             1
         :   Math.min(currentPage, totalPages)
 
-    const childPages = window.innerWidth <= 640 ? 1 : 2
+    const childPages = window.innerWidth <= 640 ? 0 : 2
 
     const getPageNumbers = (): Array<number | string> => {
         const pages: Array<number | string> = []
@@ -89,6 +89,9 @@ const ParamPagination: React.FC<PaginationProps> = ({
             Array.from({ length: totalPages }, (_, i) => i + 1)
         )
 
+
+        console.log(pageNumbers);
+        
     return (
         <div className="flex items-center gap-4">
             <Pagination2 className="w-auto m-0">
@@ -100,7 +103,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
                             onClick={handlePrevious}
                             size="icon"
                             aria-label="Previous Page"
-                            className="w-7 h-7 mt-1 sm:m-0 sm:w-10 sm:h-10"
+                            className="w-9 h-9  sm:m-0 sm:w-10 sm:h-10"
                         />
                     </PaginationItem>
                     {pageNumbers.map((page, index) =>
@@ -113,7 +116,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
                                         "cursor-pointer",
                                         disabled &&
                                             "cursor-not-allowed pointer-events-none opacity-50",
-                                        "w-7 h-7 sm:w-10 sm:h-10",
+                                        "w-9 h-9 sm:w-10 sm:h-10",
                                     )}
                                     aria-current={
                                         page === currentPage ? "page" : (
@@ -142,7 +145,7 @@ const ParamPagination: React.FC<PaginationProps> = ({
                             onClick={handleNext}
                             size="icon"
                             aria-label="Next Page"
-                            className="w-7 h-7 mt-1 sm:m-0 sm:w-10 sm:h-10"
+                            className="w-9 h-9  sm:m-0 sm:w-10 sm:h-10"
                         />
                     </PaginationItem>
                 </PaginationContent>

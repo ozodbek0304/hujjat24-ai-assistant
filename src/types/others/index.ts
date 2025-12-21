@@ -51,7 +51,7 @@ type Month = {
 
 
 type ListResponse<T> = {
-    total_pages: number
+    pages: number
     count: number
     results: T[]
 }

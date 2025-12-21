@@ -11,7 +11,7 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02]",
+                    "bg-primary/10 text-primary hover:bg-primary/15   hover:scale-[1.02]",
                 destructive:
                     "bg-destructive text-destructive-foreground hover:bg-destructive/90",
                 outline:
@@ -37,7 +37,7 @@ const buttonVariants = cva(
             size: "default",
         },
     },
-) 
+)
 
 export interface ButtonProps
     extends React.ButtonHTMLAttributes<HTMLButtonElement>,
