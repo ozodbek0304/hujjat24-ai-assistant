@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router"
-import { ArrowLeft, FileText, Plus, Sparkles } from "lucide-react"
+import { ArrowLeft, FileText, Plus } from "lucide-react"
 import { Button } from "../ui/button"
 import { ThemeColorToggle } from "./color-toggle"
 const Header = () => {
@@ -26,20 +26,11 @@ const Header = () => {
                             <span className="text-xs font-mono  ml-1">AI</span>
                         </div>
                     </div>
-                :   <Link to="/" className="flex items-center gap-2 ">
+                :   <Link to="/" className="flex items-center gap-2 bg-primary/10 hover:bg-primary/15 text-primary px-3 py-2 rounded-lg ">
                         <ArrowLeft className="w-5 h-5" />
                         <span className="font-medium">Orqaga</span>
                     </Link>
                 }
-
-                {pathname !== "/" && (
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                            <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-xl font-bold">TadqiqotAI</span>
-                    </div>
-                )}
 
                 <div className="flex items-center gap-3">
                     <ThemeColorToggle />

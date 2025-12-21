@@ -12,7 +12,7 @@ const MainSection = () => {
                 <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
             </section>
 
-            <section className="container pb-16">
+            <section className="container">
                <div className="flex justify-center">
                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
                     <Sparkles className="h-4 w-4" />

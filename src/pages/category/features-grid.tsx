@@ -48,7 +48,7 @@ const FeaturesGrid = () => {
                     vositalar bir joyda
                 </p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2  gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2 gap-3  sm:gap-6">
                 {features.map((feature, index) => (
                     <FeatureCard
                         key={index}
