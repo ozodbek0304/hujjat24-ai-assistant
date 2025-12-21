@@ -324,21 +324,6 @@ const TadqiqotCreate = () => {
                                                             alt={template.name}
                                                             className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
                                                         />
-                                                        <Button
-                                                            size={"sm"}
-                                                            type="button"
-                                                            variant={"gradient"}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                openModal()
-                                                                setTemplateItem(
-                                                                    template,
-                                                                )
-                                                            }}
-                                                            className="absolute top-2 left-2 z-10 h-7 w-7 text-white"
-                                                        >
-                                                            <Eye size={18} />
-                                                        </Button>
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                                                         <div className="absolute bottom-0 left-0 right-0 sm:p-3 p-2 text-left">
                                                             <span className="sm:text-xs text-[10px] text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
@@ -351,26 +336,21 @@ const TadqiqotCreate = () => {
                                                                 {template.name}
                                                             </h3>
                                                         </div>
-                                                        {watch("template") ===
-                                                            template.id && (
-                                                            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 gradient-primary rounded-full flex items-center justify-center ">
-                                                                <svg
-                                                                    className="w-4 h-4 text-white"
-                                                                    fill="none"
-                                                                    stroke="currentColor"
-                                                                    viewBox="0 0 24 24"
-                                                                >
-                                                                    <path
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        strokeWidth={
-                                                                            2
-                                                                        }
-                                                                        d="M5 13l4 4L19 7"
-                                                                    />
-                                                                </svg>
-                                                            </div>
-                                                        )}
+                                                        <Button
+                                                            size={"sm"}
+                                                            type="button"
+                                                            variant={"gradient"}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                openModal()
+                                                                setTemplateItem(
+                                                                    template,
+                                                                )
+                                                            }}
+                                                            className="absolute top-2 right-2 z-10 sm:!h-7 sm:!w-7 !w-6 !h-6 text-white"
+                                                        >
+                                                            <Eye className="sm:!w-4 sm:!h-4  !w-3.5 !h-3.5" />
+                                                        </Button>
                                                     </button>
                                                 ),
                                             )}
