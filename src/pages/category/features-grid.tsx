@@ -2,22 +2,22 @@ import FeatureCard from "./features-card"
 
 const features = [
     {
-        title: "Tadqiqot",
+        title: "Taqdimot",
         description: "Tez va professional tayyorlash.",
         image: "/taqdimot.png",
         comingSoon: false,
         href: "/create-presentation",
     },
     {
-        title: "Referat",
-        description: "Har qanday mavzuda tayyor va sifatli referatlar.",
-        image: "/referatlar.png",
-        comingSoon: true,
-    },
-    {
         title: "Mustaqil ish",
         description: "Mustaqil ishlarni oson va tez bajarish.",
         image: "/kurs-ishlar.png",
+        comingSoon: true,
+    },
+    {
+        title: "Referat",
+        description: "Har qanday mavzuda tayyor va sifatli referatlar.",
+        image: "/referatlar.png",
         comingSoon: true,
     },
     {

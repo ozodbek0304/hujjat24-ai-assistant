@@ -18,7 +18,6 @@ type WebSocketState<T> = {
 export const useWebSocket = <T = unknown>(
     wsUrl: string,
     params?: any | undefined,
-    pk?: 'token' | 'user_id'
 ): WebSocketState<T> => {
     const [isConnected, setIsConnected] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
@@ -41,11 +40,7 @@ export const useWebSocket = <T = unknown>(
             if (!hasConnected) {
                 setIsLoading(true)
             }
-            const ws = new WebSocket(
-                `${import.meta.env.VITE_SOCKET_URL}ws/${wsUrl}${pk === 'token' ? `?token=${localStorage.getItem(
-                    "token"
-                )}` : `/?pk=${localStorage.getItem("user_id")}`}`,
-            )
+            const ws = new WebSocket(wsUrl)
             wsRef.current = ws
 
             ws.onopen = () => {

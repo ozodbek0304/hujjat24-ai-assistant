@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button"
 import {
     TEMPLATE_CATEGORY,
     TEMPLATES,
-    TEMPLATES_DONWLOAD,
     TEMPLATES_GENERATE,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { usePost } from "@/hooks/usePost"
+import { useWebSocket } from "@/hooks/useWebsocket"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { BookOpen, FileText, Palette, Sparkles } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import LoadingScreen from "./loading-screen"
 
@@ -24,19 +24,19 @@ const imageStyles = [
         description: "Haqiqiy fotosuratlarga o'xshash",
     },
     {
-        id: "vector",
+        id: "psd",
         name: "Illustratsiya",
         icon: "🎨",
         description: "Chiroyli chizilgan rasmlar",
     },
     {
-        id: "3d",
+        id: "vector",
         name: "3D Render",
         icon: "🎲",
         description: "Uch o'lchovli modellar",
     },
     {
-        id: "abstract",
+        id: "abstrakt",
         name: "Abstrakt",
         icon: "✨",
         description: "Zamonaviy abstrakt dizayn",
@@ -52,10 +52,13 @@ type FormValues = {
     page_count: number
 }
 
+const WS_URL = "wss://api.ai.hujjat24.uz/ws/1"
+
 const TadqiqotCreate = () => {
-    const [loadingStep, setLoadingStep] = useState("")
-    const [uuid, setUuid] = useState("")
+    const [uuid, setUuid] = useState<string | null>(null)
     const [loadingProgress, setLoadingProgress] = useState(0)
+
+    const intervalRef = useRef<any | null>(null)
 
     const search = useSearch({ from: "/_main/create-presentation" })
     const { category } = search
@@ -67,55 +70,61 @@ const TadqiqotCreate = () => {
         Templates[]
     >(TEMPLATES, { params: search })
 
-    const { data: response = [] } = useGet<TemplateCategory[]>(
-        `${TEMPLATES_DONWLOAD}/${uuid}`,
-        { enabled: !!uuid },
-    )
+    const form = useForm<FormValues>({
+        defaultValues: { page_count: 10, language: "uz" },
+    })
 
-    const form = useForm<FormValues>()
-    const { control, handleSubmit, watch } = form
+    const { control, handleSubmit, watch, reset } = form
 
     const { mutate, isPending } = usePost({
         onSuccess: (data) => {
-            setUuid(data?.uuid)
-            setLoadingProgress(100)
-        },
-        onError: () => {
-            setLoadingProgress(0)
+            if (!data?.uuid) return
+            setUuid(data.uuid)
+            reset()
         },
     })
 
-    const onSubmit = (values: FormValues) => {
-        startLoadingSteps()
-        mutate(TEMPLATES_GENERATE, values)
+    const { data } = useWebSocket<{ status: number }>(WS_URL)
+
+    const animateProgress = (start: number, end: number, duration: number) => {
+        if (intervalRef.current) clearInterval(intervalRef.current)
+        const diff = end - start
+        const intervalTime = 20
+        const steps = duration / intervalTime
+        const increment = diff / steps
+        let current = start
+
+        intervalRef.current = setInterval(() => {
+            current += increment
+            if (
+                (increment > 0 && current >= end) ||
+                (increment < 0 && current <= end)
+            ) {
+                current = end
+                clearInterval(intervalRef.current!)
+            }
+            setLoadingProgress(Math.round(current))
+        }, intervalTime)
     }
 
-    const startLoadingSteps = () => {
-        const steps = [
-            { progress: 25, step: "Mavzu tahlil qilinmoqda..." },
-            { progress: 50, step: "AI kontent yaratmoqda..." },
-            { progress: 75, step: "Rasmlar generatsiya qilinmoqda..." },
-            { progress: 100, step: "Dizayn optimallashtirilmoqda..." },
-        ]
+    useEffect(() => {
+        if (!data?.status) return
 
-        steps.forEach((item, index) => {
-            setTimeout(
-                () => {
-                    setLoadingProgress(item.progress)
-                    setLoadingStep(item.step)
-                },
-                (index + 1) * 1500,
-            )
-        })
+        if (data.status === 1) {
+            animateProgress(loadingProgress, 80, 5000)
+        } else if (data.status === 2) {
+            animateProgress(loadingProgress, 100, 1000)
+        }
+    }, [data])
+
+    const onSubmit = (values: FormValues) => {
+        animateProgress(0, 40, 2000)
+        mutate(TEMPLATES_GENERATE, values)
     }
 
     return (
         <>
-            <LoadingScreen
-                isVisible={isPending}
-                progress={loadingProgress}
-                currentStep={loadingStep}
-            />
+            <LoadingScreen isVisible={isPending} progress={loadingProgress} />
 
             <form onSubmit={handleSubmit(onSubmit)} className="text-foreground">
                 {/* Hero */}
@@ -134,7 +143,7 @@ const TadqiqotCreate = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className="container mx-auto   space-y-6 md:space-y-12">
+                <div className="container mx-auto   space-y-6 md:space-y-8">
                     <div className="space-y-3">
                         <div className="md:w-1/2 grid grid-cols-2 gap-3">
                             <FormSelect

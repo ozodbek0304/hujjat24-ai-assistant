@@ -1,25 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { FileText, Image, Sparkles, Wand2 } from "lucide-react"
+import { FileText, Image, Sparkles } from "lucide-react"
 import { useEffect, useState } from "react"
 
 interface LoadingScreenProps {
     isVisible: boolean
     progress: number
-    currentStep: string
 }
 
 const loadingSteps = [
     { icon: FileText, text: "Mavzu tahlil qilinmoqda..." },
     { icon: Sparkles, text: "AI kontent yaratmoqda..." },
     { icon: Image, text: "Rasmlar generatsiya qilinmoqda..." },
-    { icon: Wand2, text: "Dizayn optimallashtirilmoqda..." },
 ]
 
-const LoadingScreen = ({
-    isVisible,
-    progress,
-    currentStep,
-}: LoadingScreenProps) => {
+const LoadingScreen = ({ isVisible, progress }: LoadingScreenProps) => {
     const [dots, setDots] = useState("")
 
     useEffect(() => {
@@ -30,6 +24,11 @@ const LoadingScreen = ({
             return () => clearInterval(interval)
         }
     }, [isVisible])
+
+    let currentStep = ""
+    if (progress <= 40) currentStep = loadingSteps[0].text
+    else if (progress <= 70) currentStep = loadingSteps[1].text
+    else currentStep = loadingSteps[2].text
 
     return (
         <AnimatePresence>
@@ -109,11 +108,13 @@ const LoadingScreen = ({
                         {/* Loading Steps */}
                         <div className="space-y-3">
                             {loadingSteps.map((step, index) => {
-                                const stepProgress = (index + 1) * 25
+                                const stepProgress = [40, 70, 100][index]
                                 const isActive =
-                                    progress >= stepProgress - 25 &&
-                                    progress < stepProgress
-                                const isComplete = progress >= stepProgress
+                                    progress >
+                                        (index === 0 ? 0 : (
+                                            [40, 70][index - 1]
+                                        )) && progress <= stepProgress
+                                const isComplete = progress > stepProgress
 
                                 return (
                                     <motion.div
