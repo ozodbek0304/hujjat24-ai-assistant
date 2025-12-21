@@ -24,7 +24,7 @@ export default function ConfimForm() {
     const codeValue = useWatch({ control: form.control, name: "code" })
 
     function handleSubmit(vals: ConfimFields) {
-        mutate("url", vals)
+        mutate("auth/login", vals)
     }
 
     React.useEffect(() => {
@@ -47,11 +47,11 @@ export default function ConfimForm() {
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
                     <a
-                        href="tg://resolve?domain=hujjat24_bot"
+                        href="tg://resolve?domain=DocBazarBot"
                         rel="noopener noreferrer"
                         className="lowercase  font-semibold cursor-pointer text-primary"
                     >
-                        @hujjat24_bot
+                        @hujjat24_ai_bot
                     </a>{" "}
                     telegram botiga kiring va <br />
                     <span className="font-medium">2 daqiqalik</span> kodingizni
@@ -64,7 +64,7 @@ export default function ConfimForm() {
                 <p className="text-center text-sm text-foreground">
                     Kod kelmadimi?{" "}
                     <a
-                        href="tg://resolve?domain=hujjat24_bot"
+                        href="tg://resolve?domain=DocBazarBot"
                         rel="noopener noreferrer"
                         className="lowercase   hover:underline font-medium cursor-pointer text-primary"
                     >
