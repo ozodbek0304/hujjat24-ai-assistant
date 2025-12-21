@@ -6,20 +6,14 @@ const MainSection = () => {
     return (
         <div className="space-y-6">
             <FeaturesGrid />
-            <section className=" overflow-hidden border-b border-border/50">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-                <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-                <div className="absolute bottom-10 right-10 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
-            </section>
 
             <section className="container">
-               <div className="flex justify-center">
-                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
-                    <Sparkles className="h-4 w-4" />
-                    <span>AI yordamida yaratilgan ishlar</span>
+                <div className="flex justify-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
+                        <Sparkles className="h-4 w-4" />
+                        <span>AI yordamida yaratilgan ishlar</span>
+                    </div>
                 </div>
-
-               </div>
                 {projects.length > 0 ?
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {projects.map((project, index) => (
