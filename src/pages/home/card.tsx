@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Calendar, Eye, Sparkles } from "lucide-react"
+import { Calendar } from "lucide-react"
 
 type Category =
     | "all"
@@ -37,47 +37,35 @@ const categoryLabels: Record<Exclude<Category, "all">, string> = {
 export const ProjectCard = ({ project, index }: ProjectCardProps) => {
     return (
         <Card
-            className="group overflow-hidden border-border/50 bg-card hover:border-primary/30 card-hover cursor-pointer animate-slide-up"
+            className="grid group grid-cols-3 rounded-sm overflow-hidden border-border/50 bg-card hover:border-primary/30 card-hover cursor-pointer animate-slide-up"
             style={{ animationDelay: `${index * 100}ms` }}
         >
-            <div className="relative aspect-[16/10] overflow-hidden">
+            <div className="relative aspect-square overflow-hidden ">
                 <img
                     src={project.thumbnail}
                     alt={project.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
 
-                <div className="absolute top-3 left-3">
+            <CardContent className="p-3 col-span-2 flex flex-col justify-between gap-1">
+                <div className="space-y-1">
+                    <h3 className="font-medium text-foreground line-clamp-1 break-all group-hover:text-primary transition-colors">
+                        {project.title}
+                    </h3>
+                    <p className=" sm:text-sm text-xs text-muted-foreground line-clamp-2 break-all">
+                        {project.description}
+                    </p>
+                </div>
+
+                <div className=" flex  justify-between text-xs text-muted-foreground">
                     <Badge variant={"default"}>
                         {categoryLabels[project.category]}
                     </Badge>
-                </div>
-
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                    <div className="flex items-center gap-1.5 text-xs text-foreground/80">
-                        <Sparkles className="h-3.5 w-3.5 text-primary" />
-                        <span>{project.aiTool}</span>
-                    </div>
-                </div>
-            </div>
-
-            <CardContent className="p-4">
-                <h3 className="font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
-                    {project.title}
-                </h3>
-                <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2">
-                    {project.description}
-                </p>
-
-                <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
                     <div className="flex items-center gap-1.5">
                         <Calendar className="h-3.5 w-3.5" />
                         <span>{project.date}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <Eye className="h-3.5 w-3.5" />
-                        <span>{project.views}</span>
                     </div>
                 </div>
             </CardContent>

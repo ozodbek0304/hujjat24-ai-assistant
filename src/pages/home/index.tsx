@@ -7,15 +7,15 @@ const MainSection = () => {
         <div className="space-y-6">
             <FeaturesGrid />
 
-            <section className="container">
-                <div className="flex justify-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
-                        <Sparkles className="h-4 w-4" />
+            <section className="container ">
+                <div className="flex justify-center sm:py-5 py-3">
+                    <div className="flex items-center gap-2 sm:text-3xl text-xl font-medium sm:font-semibold sm:mb-6 mb-4">
+                        <Sparkles className="sm:h-8 sm:w-8 h-6 w-6 text-primary" />
                         <span>AI yordamida yaratilgan ishlar</span>
                     </div>
                 </div>
                 {projects.length > 0 ?
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2 sm:gap-4">
                         {projects.map((project, index) => (
                             <ProjectCard
                                 key={project.id}
