@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 
 
-export function useTelegram() {
+export function useIsTelegram() {
     const [isTelegram, setIsTelegram] = useState(false);
 
     useEffect(() => {
