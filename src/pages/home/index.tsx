@@ -4,9 +4,7 @@ export default function TelegramWebApp() {
     const [tg, setTg] = useState(null)
     const [user, setUser] = useState(null)
 
-
     useEffect(() => {
-      
         const script = document.createElement("script")
         script.src = "https://telegram.org/js/telegram-web-app.js"
         script.async = true
@@ -15,7 +13,7 @@ export default function TelegramWebApp() {
         script.onload = () => {
             if (window.Telegram?.WebApp) {
                 const webApp = window.Telegram.WebApp
-
+                setTg(webApp)
                 webApp.expand()
 
                 if (webApp.initDataUnsafe?.user) {
@@ -28,7 +26,7 @@ export default function TelegramWebApp() {
 
                 // Main button bosilganda
                 webApp.MainButton.onClick(() => {
-                    setTg(webApp)
+                    requestPhoneNumber(webApp)
                 })
             }
         }
@@ -40,8 +38,27 @@ export default function TelegramWebApp() {
         }
     }, [])
 
+    const requestPhoneNumber = (webApp) => {
+        try {
+            // Telegram Web App orqali telefon raqam so'rash
+            webApp.requestContact((result) => {
+                if (result) {
+                    setUser((prev) => ({
+                        ...prev,
+                        phone_number:
+                            webApp.initDataUnsafe.user?.phone_number ||
+                            "+998XXYYYZZZZ",
+                    }))
 
-
+                    webApp.showAlert(
+                        "Telefon raqamingiz muvaffaqiyatli yuborildi!",
+                    )
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 p-4">
@@ -64,8 +81,12 @@ export default function TelegramWebApp() {
                             <p className="text-xs text-gray-500">
                                 ID: {user.id}
                             </p>
-                             <p className="text-xs text-gray-500">
-                                Telefon raqm: {JSON.stringify(tg)}
+                            <p className="text-xs text-gray-500">
+                                Telefon raqam:{" "}
+                                {user.phone_number || "Yuborilmagan"}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                                ma'lumot: {JSON.stringify(tg)}
                             </p>
                         </div>
                     </div>
