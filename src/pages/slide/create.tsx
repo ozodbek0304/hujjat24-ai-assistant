@@ -1,4 +1,5 @@
 import ParamInput from "@/components/as-params/input"
+import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import {
@@ -48,6 +49,7 @@ type FormValues = {
     language: string
     image_color: string
     image_content_type: string
+    page_count: number
 }
 
 const TadqiqotCreate = () => {
@@ -133,33 +135,76 @@ const TadqiqotCreate = () => {
 
                 {/* Main Content */}
                 <div className="container mx-auto  pb-16 space-y-6 md:space-y-12">
-                    {/* Section 1: Mavzu */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border ">
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
-                                1
-                            </div>
-                            <div>
-                                <h2 className="text-xl font-bold flex items-center gap-2">
-                                    <FileText className="w-5 h-5 text-primary" />
-                                    Mavzuni yozing
-                                </h2>
-                                <p className="text-muted-foreground text-sm">
-                                    Tadqiqot mavzusini batafsil yozing
-                                </p>
-                            </div>
+                    <div className="space-y-3">
+                        <div className="md:w-1/2 grid grid-cols-2 gap-3">
+                            <FormSelect
+                                required
+                                control={control}
+                                name="language"
+                                placeholder="Tilni tanlang"
+                                options={[
+                                    {
+                                        value: "uz",
+                                        label: "Uzbek",
+                                    },
+                                    {
+                                        value: "ru",
+                                        label: "Russia",
+                                    },
+                                    {
+                                        value: "en",
+                                        label: "English",
+                                    },
+                                ]}
+                                valueKey="value"
+                                labelKey="label"
+                                className="bg-card"
+                            />
+
+                            <FormSelect
+                                required
+                                control={control}
+                                name="page_count"
+                                placeholder="Sahifalar soni"
+                                options={Array.from({ length: 20 }).map(
+                                    (_, index) => ({
+                                        value: index + 1,
+                                        label: `${index + 1} sahifa`,
+                                    }),
+                                )}
+                                valueKey="value"
+                                labelKey="label"
+                                className="bg-card"
+                            />
                         </div>
-                        <FormTextarea
-                            required
-                            methods={form}
-                            name="title"
-                            placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati, zamonaviy texnologiyalarning rivojlanishi..."
-                            className=" text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
-                        />
-                    </section>
+                        {/* Section 1: Mavzu */}
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-3 md:p-8 border border-border ">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                                    1
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-bold flex items-center gap-2">
+                                        <FileText className="w-5 h-5 text-primary" />
+                                        Mavzuni yozing
+                                    </h2>
+                                    <p className="text-muted-foreground text-sm">
+                                        Tadqiqot mavzusini batafsil yozing
+                                    </p>
+                                </div>
+                            </div>
+                            <FormTextarea
+                                required
+                                methods={form}
+                                name="title"
+                                placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati, zamonaviy texnologiyalarning rivojlanishi..."
+                                className=" text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                            />
+                        </section>
+                    </div>
 
                     {/* Section 2: Shablon */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border ">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-3 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 2
@@ -285,7 +330,7 @@ const TadqiqotCreate = () => {
                     </section>
 
                     {/* Section 3: Rasm uslubi */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-border ">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-3 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 3

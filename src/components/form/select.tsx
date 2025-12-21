@@ -1,10 +1,10 @@
-import { Controller, Control, FieldValues, Path } from "react-hook-form"
-import FieldLabel from "./form-label"
-import FieldError from "./form-error"
-import Select from "../ui/select"
-import { getNestedValue } from "./input"
-import { ReactNode } from "react"
 import { cn } from "@/lib/utils"
+import { ReactNode } from "react"
+import { Control, Controller, FieldValues, Path } from "react-hook-form"
+import Select from "../ui/select"
+import FieldError from "./form-error"
+import FieldLabel from "./form-label"
+import { getNestedValue } from "./input"
 
 export function FormSelect<
     TForm extends FieldValues,
@@ -16,7 +16,6 @@ export function FormSelect<
     disabled,
     required,
     control,
-    setValue,
     valueKey,
     labelKey,
     hideError = true,
@@ -42,7 +41,7 @@ export function FormSelect<
                 rules={
                     required ? { required: `${label || name}ni kiriting` } : {}
                 }
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                     <div className={label ? "pt-[2px]" : ""}>
                         <Select
                             options={options}
@@ -50,14 +49,11 @@ export function FormSelect<
                             placeholder={placeholder}
                             value={field.value}
                             className={cn(
-                                !!error && "border-destructive focus:right-0",
+                                fieldState.error &&
+                                    "border border-destructive focus:right-0",
                                 className,
                             )}
-                            setValue={(val) =>
-                                val === "other" ?
-                                    setValue?.(val)
-                                :   field.onChange(val)
-                            }
+                            setValue={(val) => field.onChange(val)}
                             disabled={disabled}
                             labelKey={labelKey}
                             valueKey={valueKey}
