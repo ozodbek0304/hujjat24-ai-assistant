@@ -75,7 +75,7 @@ const TadqiqotCreate = () => {
         useGet<TemplateCategory[]>(TEMPLATE_CATEGORY)
     const { data: templates, isSuccess: isSuccessTemplate } = useGet<
         ListResponse<Templates>
-    >(TEMPLATES, { params: { ...search, page_size: 8 } })
+    >(TEMPLATES, { params: { ...search, size: 8 } })
 
     const { data: templatesView } = useGet<string[]>(
         `${TEMPLATE_CATEGORY_VIEW}/${templateItem?.id}`,
@@ -88,7 +88,7 @@ const TadqiqotCreate = () => {
         defaultValues: { page_count: 10, language: "uz" },
     })
 
-    const { control, handleSubmit, watch, reset } = form
+    const { control, handleSubmit, reset } = form
 
     const { mutate, isPending } = usePost({
         onSuccess: (data) => {
