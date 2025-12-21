@@ -24,7 +24,7 @@ const FeatureCard = ({
                     Tez orada
                 </div>
             )}
-            <div className="h-20 min-w-20 sm:h-28 sm:w-28">
+            <div className="h-20 min-w-20 max-w-20 sm:max-w-32 w-full sm:h-28 sm:w-28">
                 <img className="w-full h-full" src={image} alt={title} />
             </div>
             <div className="flex flex-col gap-1">
