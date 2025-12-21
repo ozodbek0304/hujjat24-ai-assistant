@@ -4,28 +4,19 @@ export function useIsTelegram(): boolean {
   const [isTelegram, setIsTelegram] = useState(false);
 
   useEffect(() => {
-    const checkTelegram = () => {
-      if (typeof window === "undefined") return false;
+    const ua = navigator.userAgent.toLowerCase();
 
-      const ua = navigator.userAgent || "";
+    if ((window as any)?.Telegram?.WebApp) {
+      setIsTelegram(true);
+      return;
+    }
 
-      // 1. Telegram Mobile WebApp
-      if (window.Telegram && window.Telegram.WebApp) {
-        setIsTelegram(true);
-        return;
-      }
+    if (ua.includes("telegram")) {
+      setIsTelegram(true);
+      return;
+    }
 
-      // 2. Telegram Desktop (Mac/Windows/Linux)
-      if (ua.includes("TelegramDesktop")) {
-        setIsTelegram(true);
-        return;
-      }
-
-      // 3. Qolgan barcha holatlar
-      setIsTelegram(false);
-    };
-
-    checkTelegram();
+    setIsTelegram(false);
   }, []);
 
   return isTelegram;
