@@ -1,10 +1,8 @@
-import { useIsTelegram } from "@/hooks/useIsTelegram"
 import { Sparkles } from "lucide-react"
 import FeaturesGrid from "../category/features-grid"
 import { Project, ProjectCard } from "./card"
 
 const MainSection = () => {
-    const isTelegram = useIsTelegram()
     return (
         <div className="space-y-6">
             <FeaturesGrid />
@@ -13,7 +11,7 @@ const MainSection = () => {
                 <div className="flex justify-center sm:py-5 py-3">
                     <div className="flex items-center gap-2 sm:text-3xl text-xl font-medium sm:font-semibold sm:mb-6 mb-4">
                         <Sparkles className="sm:h-8 sm:w-8 h-6 w-6 text-primary" />
-                        <span>AI yordamida yaratilgan ishlar  {isTelegram ? "Telegramdan kirdi ✅" : "Saytdan kirdi ❌"}</span>
+                        <span>AI yordamida yaratilgan ishlar</span>
                     </div>
                 </div>
                 {projects.length > 0 ?
