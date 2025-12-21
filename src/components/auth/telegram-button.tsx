@@ -35,7 +35,7 @@ export default function TelegramWebApp() {
     }
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-20 w-full p-2">
+        <div className="fixed bottom-0 left-0 right-0 z-20 w-full px-2 pb-1">
             <Button variant={"gradient"} className="w-full" onClick={handlePhoneRequest}>Telefon raqam yuborish</Button>
         </div>
     )
