@@ -13,7 +13,7 @@ export const getAccessToken = () => localStorage.getItem("token")
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = getAccessToken()
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic3ViIjoiMSIsImV4cCI6MTc2NzE5MTExNCwiaWF0IjoxNzY2MzI3MTE0fQ.AcdKgngRBR1nuOJ6tgjx0JEc0aMXUR7kYPP8jdt6Kno"
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
