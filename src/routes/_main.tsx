@@ -27,7 +27,7 @@ function MainLayout() {
                     "mx-auto p-4 h-full overflow-y-auto  container  pt-20 flex flex-col pb-10",
                 )}
             >
-                <Outlet />
+                {/* <Outlet /> */}
                 {isTelegram && <TelegramWebApp />}
             </main>
         </div>
