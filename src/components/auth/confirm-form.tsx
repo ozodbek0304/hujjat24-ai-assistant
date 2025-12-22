@@ -1,5 +1,6 @@
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
+import { useAuthStore } from "@/store/auth-store"
 import { MessageCircle } from "lucide-react"
 import React from "react"
 import { useForm, useWatch } from "react-hook-form"
@@ -13,9 +14,13 @@ type ConfimFields = {
 export default function ConfimForm() {
     const form = useForm<ConfimFields>()
     const { closeModal } = useModal("login-modal")
+    const { setToken } = useAuthStore()
 
     const { mutate, isPending } = usePost({
         onSuccess: (data) => {
+            if (data?.access_token) {
+                setToken(data?.access_token)
+            }
             closeModal()
             toast.success("Muavffaqiyatli kirdingiz!")
         },

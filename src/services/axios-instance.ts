@@ -1,5 +1,6 @@
+import { useAuthStore } from "@/store/auth-store"
 import axios from "axios"
-import { toast } from "sonner"
+
 
 export const baseURL = import.meta.env.VITE_DEFAULT_URL
 
@@ -13,7 +14,7 @@ export const getAccessToken = () => localStorage.getItem("token")
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic3ViIjoiMSIsImV4cCI6MTc2NzE5MTExNCwiaWF0IjoxNzY2MzI3MTE0fQ.AcdKgngRBR1nuOJ6tgjx0JEc0aMXUR7kYPP8jdt6Kno"
+        const token = getAccessToken()
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
@@ -24,31 +25,18 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     (response) => response,
+    (error) => {
+        const status = error?.response?.status;
 
-    async (error) => {
-        const originalRequest = error.config
-        const status = error.response?.status
-
-        const isLoginPage = window.location.pathname === '/auth';
-        if (isLoginPage && (status === 401 || status === 403)) {
-            return Promise.reject(error);
-        }
-
-        if (status === 401 && originalRequest._retry) {
-            originalRequest._retry = true
-
-            try {
-                return axiosInstance(originalRequest)
-            } catch (refreshError) {
-                location.href = "/auth"
-                return Promise.reject(refreshError)
+        if (status === 401 || status === 403) {
+            if (typeof window !== "undefined") {
+                const { clearToken } = useAuthStore.getState();
+                clearToken();
             }
         }
-        if (status === 403) {
-            toast.error("Sizga ruxsat berilmagan" + ": " + error?.config?.url)
-        }
-        return Promise.reject(error)
-    },
-)
+
+        return Promise.reject(error);
+    }
+);
 
 export default axiosInstance
