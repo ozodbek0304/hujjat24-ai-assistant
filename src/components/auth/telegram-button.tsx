@@ -101,7 +101,7 @@ export default function TelegramWebApp() {
     }
 
     return (
-        <div className="w-full px-2 pb-1  fixed left-0 right-0 bottom-0">
+        <div className="w-full px-2 pb-1  fixed left-0 right-0 bottom-0 z-20">
             {showPhoneButton && (
                 <Button
                     variant="gradient"
