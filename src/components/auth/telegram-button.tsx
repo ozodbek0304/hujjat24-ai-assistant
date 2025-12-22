@@ -61,7 +61,7 @@ export default function TelegramWebApp() {
 
             {
                 onSuccess: (res: any) => {
-                    if (res?.acctoken) {
+                    if (res?.access_token) {
                         if (res?.access_token) {
                             setToken(res?.access_token)
                         }
