@@ -25,7 +25,18 @@ export default function TelegramWebApp() {
         script.onload = () => {
             if (window.Telegram?.WebApp) {
                 const webApp = window.Telegram.WebApp
+
                 webApp.expand()
+                webApp.enableClosingConfirmation?.()
+                tg.ready?.()
+                tg.setHeaderColor?.("#ffffff")
+                tg.setBackgroundColor?.("#ffffff")
+
+                // ⛔️ Tepadan tortib yopishni deyarli bloklash
+                document.body.style.overscrollBehavior = "none"
+                document.body.style.touchAction = "none"
+                document.documentElement.style.overscrollBehavior = "none"
+
                 setTg(webApp)
 
                 const user = webApp.initDataUnsafe?.user
@@ -90,6 +101,7 @@ export default function TelegramWebApp() {
                             setToken(res?.access_token)
                         }
                         setShowPhoneButton(false)
+                        toast.success("Muvaffaqiyatli ro'yxatdan o'tdingiz ✅")
                     },
                 },
             )

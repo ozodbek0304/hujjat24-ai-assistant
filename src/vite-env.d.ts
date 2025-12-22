@@ -24,29 +24,66 @@ declare global {
   }
 }
 
+export interface TelegramUser {
+  id: number
+  first_name?: string
+  last_name?: string
+  username?: string
+  language_code?: string
+}
+
+export interface TelegramContactResult {
+  success: boolean
+  responseUnsafe?: {
+    contact?: {
+      user_id: number
+      phone_number: string
+      first_name?: string
+      last_name?: string
+    }
+  }
+}
+
+export interface TelegramMainButton {
+  text: string
+  show: () => void
+  hide: () => void
+  onClick: (callback: () => void) => void
+}
+
 export interface TelegramWebAppType {
   initData: string
   initDataUnsafe?: {
     user?: TelegramUser
   }
-  MainButton: {
-    text: string
-    show: () => void
-    hide: () => void
-    onClick: (callback: () => void) => void
-  }
+  MainButton: TelegramMainButton
   expand: () => void
   requestContact: (callback: (result: TelegramContactResult) => void) => void
   showAlert: (text: string) => void
+  enableClosingConfirmation?: () => void
+  setHeaderColor?: (color: string) => void
+  setBackgroundColor?: (color: string) => void
+  ready?: () => void
 }
 
-export interface TelegramUser {
-  id: number
-  first_name: string
-  last_name?: string
-  username?: string
-  phone_number?: string
+
+
+export interface TelegramWebAppType {
+  initData: string
+  initDataUnsafe?: {
+    user?: TelegramUser
+  }
+  MainButton: TelegramMainButton
+  expand: () => void
+  requestContact: (callback: (result: TelegramContactResult) => void) => void
+  showAlert: (text: string) => void
+  enableClosingConfirmation?: () => void
+  setHeaderColor?: (color: string) => void
+  setBackgroundColor?: (color: string) => void
+  ready?: () => void
 }
+
+
 
 export interface TelegramContactResult {
   phone_number?: string
