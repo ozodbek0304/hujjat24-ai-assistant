@@ -1,3 +1,4 @@
+import { LOGIN_WEB } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
 import { useAuthStore } from "@/store/auth-store"
@@ -29,7 +30,7 @@ export default function ConfimForm() {
     const codeValue = useWatch({ control: form.control, name: "code" })
 
     function handleSubmit(vals: ConfimFields) {
-        mutate("auth/login", vals)
+        mutate(LOGIN_WEB, vals)
     }
 
     React.useEffect(() => {

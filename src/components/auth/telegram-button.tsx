@@ -34,8 +34,11 @@ export default function TelegramWebApp() {
         })
     }
 
+
     return (
         <div className="fixed bottom-0 left-0 right-0 z-20 w-full px-2 pb-1">
+
+            {JSON.stringify(tg)}
             <Button variant={"gradient"} className="w-full text-white" onClick={handlePhoneRequest}>Telefon raqam yuborish</Button>
         </div>
     )
