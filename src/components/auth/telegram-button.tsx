@@ -25,22 +25,46 @@ export default function TelegramWebApp() {
         script.onload = () => {
             if (window.Telegram?.WebApp) {
                 const webApp = window.Telegram.WebApp
+
                 webApp.expand()
-                // Yopishdan oldin tasdiqlash
-                webApp.enableClosingConfirmation?.()
                 webApp.ready?.()
                 webApp.setHeaderColor?.("#ffffff")
                 webApp.setBackgroundColor?.("#ffffff")
 
-                // ⚡️ Scrollni va pull-to-close’ni bloklash
-                document.body.style.overscrollBehavior = "contain"
-                document.documentElement.style.overscrollBehavior = "contain"
-                document.body.style.touchAction = "pan-x pan-y pinch-zoom"
-                document.body.addEventListener(
-                    "touchmove",
-                    preventPullToClose,
-                    { passive: false },
-                )
+                // ⛔️ Yopishni tasdiqlashni o'chirish (muhim!)
+                webApp.disableClosingConfirmation?.()
+
+                // ⛔️ Scroll va swipe harakatlarini bloklash
+                document.body.style.overscrollBehavior = "none"
+                document.body.style.touchAction = "pan-y" // Faqat vertical scroll
+                document.documentElement.style.overscrollBehavior = "none"
+                document.documentElement.style.touchAction = "pan-y"
+
+                // ⛔️ Tepadan tortishni bloklash uchun
+                let startY = 0
+                const preventPullToClose = (e: TouchEvent) => {
+                    const touch = e.touches[0]
+                    if (e.type === "touchstart") {
+                        startY = touch.clientY
+                    } else if (e.type === "touchmove") {
+                        const currentY = touch.clientY
+                        const scrollTop =
+                            window.pageYOffset ||
+                            document.documentElement.scrollTop
+
+                        // Agar sahifa tepasida bo'lsa va pastga tortilayotgan bo'lsa
+                        if (scrollTop === 0 && currentY > startY) {
+                            e.preventDefault()
+                        }
+                    }
+                }
+
+                document.addEventListener("touchstart", preventPullToClose, {
+                    passive: false,
+                })
+                document.addEventListener("touchmove", preventPullToClose, {
+                    passive: false,
+                })
 
                 setTg(webApp)
 
@@ -48,14 +72,17 @@ export default function TelegramWebApp() {
                 if (user?.id) {
                     autoLogin(user)
                 }
-            }
-        }
 
-        function preventPullToClose(e: TouchEvent) {
-            if (window.Telegram?.WebApp?.isExpanded) {
-                if (e.touches[0].clientY < 50) {
-                    // tepadan tortilayotgan joy
-                    e.preventDefault()
+                // Cleanup function'ga qo'shish
+                return () => {
+                    document.removeEventListener(
+                        "touchstart",
+                        preventPullToClose,
+                    )
+                    document.removeEventListener(
+                        "touchmove",
+                        preventPullToClose,
+                    )
                 }
             }
         }
@@ -64,7 +91,6 @@ export default function TelegramWebApp() {
             if (document.body.contains(script)) {
                 document.body.removeChild(script)
             }
-            document.body.removeEventListener("touchmove", preventPullToClose)
         }
     }, [])
 
