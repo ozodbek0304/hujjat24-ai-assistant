@@ -25,17 +25,22 @@ export default function TelegramWebApp() {
         script.onload = () => {
             if (window.Telegram?.WebApp) {
                 const webApp = window.Telegram.WebApp
-
                 webApp.expand()
+                // Yopishdan oldin tasdiqlash
                 webApp.enableClosingConfirmation?.()
                 webApp.ready?.()
                 webApp.setHeaderColor?.("#ffffff")
                 webApp.setBackgroundColor?.("#ffffff")
 
-                // ⛔️ Tepadan tortib yopishni deyarli bloklash
-                document.body.style.overscrollBehavior = "none"
-                document.body.style.touchAction = "none"
-                document.documentElement.style.overscrollBehavior = "none"
+                // ⚡️ Scrollni va pull-to-close’ni bloklash
+                document.body.style.overscrollBehavior = "contain"
+                document.documentElement.style.overscrollBehavior = "contain"
+                document.body.style.touchAction = "pan-x pan-y pinch-zoom"
+                document.body.addEventListener(
+                    "touchmove",
+                    preventPullToClose,
+                    { passive: false },
+                )
 
                 setTg(webApp)
 
@@ -46,10 +51,20 @@ export default function TelegramWebApp() {
             }
         }
 
+        function preventPullToClose(e: TouchEvent) {
+            if (window.Telegram?.WebApp?.isExpanded) {
+                if (e.touches[0].clientY < 50) {
+                    // tepadan tortilayotgan joy
+                    e.preventDefault()
+                }
+            }
+        }
+
         return () => {
             if (document.body.contains(script)) {
                 document.body.removeChild(script)
             }
+            document.body.removeEventListener("touchmove", preventPullToClose)
         }
     }, [])
 

@@ -65,6 +65,7 @@ export interface TelegramWebAppType {
   setBackgroundColor?: (color: string) => void
   ready?: () => void
   isClosingConfirmationEnabled:boolean
+  isExpanded:boolean
 }
 
 
