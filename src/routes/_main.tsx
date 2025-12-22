@@ -3,7 +3,7 @@ import Header from "@/components/header"
 import type { SEARCH_KEY } from "@/constants/default"
 import { useIsTelegram } from "@/hooks/useIsTelegram"
 import { cn } from "@/lib/utils"
-import { createFileRoute, Outlet } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_main")({
     component: MainLayout,
@@ -28,7 +28,7 @@ function MainLayout() {
                 )}
             >
                 {/* <Outlet /> */}
-                {isTelegram && <TelegramWebApp />}
+                <TelegramWebApp />
             </main>
         </div>
     )
