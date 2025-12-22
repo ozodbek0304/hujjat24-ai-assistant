@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button"
+import {
+    LOGIN_TELEGRAM,
+    LOGIN_TELEGRAM_REGISTER,
+} from "@/constants/api-endpoints"
+import { usePost } from "@/hooks/usePost"
+import { useAuthStore } from "@/store/auth-store"
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 type ContactType = {
     phone?: string
@@ -8,8 +15,13 @@ type ContactType = {
 }
 
 export default function TelegramWebApp() {
+    const { setToken } = useAuthStore()
     const [tg, setTg] = useState<any>(null)
     const [contact, setContact] = useState<ContactType | null>(null)
+    const [showPhoneButton, setShowPhoneButton] = useState(false)
+
+    const { mutate: loginMutate } = usePost()
+    const { mutate: registerMutate } = usePost()
 
     useEffect(() => {
         const script = document.createElement("script")
@@ -22,6 +34,11 @@ export default function TelegramWebApp() {
                 const webApp = window.Telegram.WebApp
                 webApp.expand()
                 setTg(webApp)
+
+                const user = webApp.initDataUnsafe?.user
+                if (user?.id) {
+                    autoLogin(user)
+                }
             }
         }
 
@@ -32,28 +49,62 @@ export default function TelegramWebApp() {
         }
     }, [])
 
-    const handlePhoneRequest = () => {
-        if (!tg) {
-            alert("Telegram WebApp topilmadi")
-            return
+    const autoLogin = (user: any) => {
+        const payload = {
+            chat_id: user.id,
+            first_name: user.first_name,
         }
 
-        console.log("requestContact chaqirildi")
+        loginMutate(
+            LOGIN_TELEGRAM,
+            payload,
 
-        // ✅ Telegram Mini App API - to'g'ri callback usuli
+            {
+                onSuccess: (res: any) => {
+                    if (res?.acctoken) {
+                        if (res?.access_token) {
+                            setToken(res?.access_token)
+                        }
+                        toast.success("Muavffaqiyatli kirdingiz!")
+                    } else {
+                        setShowPhoneButton(true)
+                    }
+                },
+                onError: () => {
+                    setShowPhoneButton(true)
+                },
+            },
+        )
+    }
+
+    const handlePhoneRequest = () => {
+        if (!tg) return
+
         tg.requestContact((success: boolean, data?: any) => {
-            console.log("Callback natijasi:", { success, data })
-
-            if (success && data) {
-                setContact({
-                    phone: data.responseUnsafe?.contact?.phone_number,
-                    user_id: data.responseUnsafe?.contact?.user_id,
-                    first_name: data.responseUnsafe?.contact?.first_name,
-                })
-                tg.showAlert("Telefon raqam olindi ✅")
-            } else {
-                tg.showAlert("Telefon raqam yuborilmadi ❌")
+            if (!success) {
+                toast.error("Telefon yuborilmadi ❌")
+                return
             }
+            const payload = {
+                phone: data.responseUnsafe?.contact?.phone_number,
+                chat_id: data.responseUnsafe?.contact?.user_id,
+                first_name: data.responseUnsafe?.contact?.first_name,
+            }
+            setContact(payload)
+
+            registerMutate(
+                LOGIN_TELEGRAM_REGISTER,
+                payload,
+
+                {
+                    onSuccess: (res: any) => {
+                        if (res?.access_token) {
+                            setToken(res?.access_token)
+                        }
+                        toast.success("Muavffaqiyatli kirdingiz!")
+                    },
+                },
+            )
         })
     }
 
@@ -73,14 +124,15 @@ export default function TelegramWebApp() {
                 </div>
             )}
 
-            <Button
-                variant="gradient"
-                className="w-full text-white"
-                onClick={handlePhoneRequest}
-                disabled={!tg}
-            >
-                {tg ? "Telefon raqam yuborish" : "Yuklanmoqda..."}
-            </Button>
+            {showPhoneButton && (
+                <Button
+                    variant="gradient"
+                    className="w-full text-white"
+                    onClick={handlePhoneRequest}
+                >
+                    Telefon raqam yuborish
+                </Button>
+            )}
         </div>
     )
 }
