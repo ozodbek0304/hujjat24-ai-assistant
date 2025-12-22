@@ -20,10 +20,8 @@ export default function TelegramWebApp() {
         script.onload = () => {
             if (window.Telegram?.WebApp) {
                 const webApp = window.Telegram.WebApp
-                webApp.ready()
                 webApp.expand()
                 setTg(webApp)
-                console.log("Telegram WebApp yuklandi:", webApp)
             }
         }
 
