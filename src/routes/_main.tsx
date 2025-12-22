@@ -14,7 +14,7 @@ function MainLayout() {
         <div className="w-full h-full overflow-y-auto">
             <div
                 className={cn(
-                    "fixed top-0 right-0 z-30 transition-[width,height,padding] w-full",
+                    "fixed bottom-0 right-0 z-30 transition-[width,height,padding] w-full",
                 )}
             >
                 <Header />
