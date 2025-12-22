@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export function useIsTelegram(): boolean {
-    const [isTelegram, setIsTelegram] = useState(false)
+    const [isTelegram, setIsTelegram] = useState(false);
 
     useEffect(() => {
-        if (typeof window === "undefined") return
+        const ua = navigator.userAgent.toLowerCase();
 
-        const tg = (window as any)?.Telegram?.WebApp
-        const userId = tg?.initDataUnsafe?.user?.id
+        if ((window as any)?.Telegram?.WebApp) {
+            setIsTelegram(true);
+            return;
+        }
 
-        setIsTelegram(Boolean(userId))
-    }, [])
+        if (ua.includes("telegram")) {
+            setIsTelegram(true);
+            return;
+        }
 
-    return isTelegram
+        setIsTelegram(false);
+    }, []);
+
+    return isTelegram;
 }
