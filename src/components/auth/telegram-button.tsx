@@ -58,13 +58,9 @@ export default function TelegramWebApp() {
                         if (res?.access_token) {
                             setToken(res?.access_token)
                         }
-                        toast.success("Muavffaqiyatli kirdingiz!")
                     } else {
                         setShowPhoneButton(true)
                     }
-                },
-                onError: () => {
-                    setShowPhoneButton(true)
                 },
             },
         )
@@ -93,7 +89,7 @@ export default function TelegramWebApp() {
                         if (res?.access_token) {
                             setToken(res?.access_token)
                         }
-                        toast.success("Muavffaqiyatli kirdingiz! ")
+                        setShowPhoneButton(false)
                     },
                 },
             )
