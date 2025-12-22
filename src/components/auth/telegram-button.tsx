@@ -27,10 +27,18 @@ export default function TelegramWebApp() {
                 const webApp = window.Telegram.WebApp
 
                 webApp.expand()
-                webApp.enableClosingConfirmation?.()
                 tg.ready?.()
-                tg.setHeaderColor?.("#ffffff")
-                tg.setBackgroundColor?.("#ffffff")
+
+                webApp.isClosingConfirmationEnabled = true
+                webApp.enableClosingConfirmation?.()
+
+                // Header va background ranglarini o'rnatish
+                if (webApp.setHeaderColor) {
+                    webApp.setHeaderColor("#ffffff")
+                }
+                if (webApp.setBackgroundColor) {
+                    webApp.setBackgroundColor("#ffffff")
+                }
 
                 // ⛔️ Tepadan tortib yopishni deyarli bloklash
                 document.body.style.overscrollBehavior = "none"
