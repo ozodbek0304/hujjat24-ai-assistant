@@ -8,8 +8,6 @@ import { useAuthStore } from "@/store/auth-store"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
-
-
 export default function TelegramWebApp() {
     const { setToken } = useAuthStore()
     const [tg, setTg] = useState<any>(null)
@@ -102,9 +100,8 @@ export default function TelegramWebApp() {
         })
     }
 
-
     return (
-        <div className="w-full px-2 pb-1 space-y-3">
+        <div className="w-full px-2 pb-1  absolute left-0 right-0">
             {showPhoneButton && (
                 <Button
                     variant="gradient"
