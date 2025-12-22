@@ -30,7 +30,7 @@ const Header = () => {
                         className="flex items-center gap-2 bg-primary/10 hover:bg-primary/15 text-primary px-3 py-2 rounded-lg "
                     >
                         <ArrowLeft className="w-5 h-5" />
-                        <span className="font-medium">Orqaga</span>
+                        <span >Orqaga</span>
                     </Link>
                 }
 

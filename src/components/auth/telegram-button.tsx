@@ -8,16 +8,11 @@ import { useAuthStore } from "@/store/auth-store"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
-type ContactType = {
-    phone?: string
-    user_id?: number
-    first_name?: string
-}
+
 
 export default function TelegramWebApp() {
     const { setToken } = useAuthStore()
     const [tg, setTg] = useState<any>(null)
-    const [contact, setContact] = useState<ContactType | null>(null)
     const [showPhoneButton, setShowPhoneButton] = useState(false)
 
     const { mutate: loginMutate } = usePost()
@@ -90,7 +85,6 @@ export default function TelegramWebApp() {
                 chat_id: data.responseUnsafe?.contact?.user_id,
                 first_name: data.responseUnsafe?.contact?.first_name,
             }
-            setContact(payload)
 
             registerMutate(
                 LOGIN_TELEGRAM_REGISTER,
@@ -101,29 +95,16 @@ export default function TelegramWebApp() {
                         if (res?.access_token) {
                             setToken(res?.access_token)
                         }
-                        toast.success("Muavffaqiyatli kirdingiz!")
+                        toast.success("Muavffaqiyatli kirdingiz! ")
                     },
                 },
             )
         })
     }
 
+
     return (
         <div className="w-full px-2 pb-1 space-y-3">
-            {contact && (
-                <div className="rounded-md bg-green-50 p-3 text-sm text-green-800">
-                    <div>
-                        <b>Ism:</b> {contact.first_name || "—"}
-                    </div>
-                    <div>
-                        <b>User ID:</b> {contact.user_id || "—"}
-                    </div>
-                    <div>
-                        <b>Telefon:</b> {contact.phone || "—"}
-                    </div>
-                </div>
-            )}
-
             {showPhoneButton && (
                 <Button
                     variant="gradient"

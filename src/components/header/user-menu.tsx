@@ -39,7 +39,8 @@ export default function UserMenu() {
                             className="p-2 cursor-pointer  focus:outline-none focus:ring-0"
                             value="1"
                         >
-                            <LayoutList size={17}  className="mr-2"/> Yaratilgan ishlarim
+                            <LayoutList size={17} className="mr-2" /> Yaratilgan
+                            ishlarim
                         </DropdownMenuRadioItem>
                         <DropdownMenuRadioItem
                             onClick={functionLogOut}
