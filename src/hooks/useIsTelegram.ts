@@ -1,9 +1,10 @@
-import { TelegramUser } from "@/vite-env";
 import { useEffect, useState } from "react";
 
-
 export function useTelegramUser() {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<any>({
+        loading: true,
+        isTelegram: false,
+    });
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -13,25 +14,22 @@ export function useTelegramUser() {
 
         script.onload = () => {
             const tg = window.Telegram?.WebApp;
-
-            if (!tg) return;
-
-
-            const user = tg.initDataUnsafe?.user;
+            const user = tg?.initDataUnsafe?.user;
 
             if (user?.id) {
                 setData({
+                    loading: false,
+                    isTelegram: true,
                     user_id: user.id,
                     username: user.username,
                     first_name: user.first_name,
                     photo_url: user.photo_url,
                 });
-            }
-        };
-
-        return () => {
-            if (document.body.contains(script)) {
-                document.body.removeChild(script);
+            } else {
+                setData({
+                    loading: false,
+                    isTelegram: false,
+                });
             }
         };
     }, []);
