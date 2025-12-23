@@ -1,42 +1,46 @@
+import { useTelegramUser } from "@/hooks/useIsTelegram"
 import { Sparkles } from "lucide-react"
 import FeaturesGrid from "../category/features-grid"
 import { Project, ProjectCard } from "./card"
 
 const MainSection = () => {
+    const telegramUser = useTelegramUser()
     return (
         <div className="space-y-6">
             <FeaturesGrid />
 
-            <section className="container ">
-                <div className="flex justify-center sm:py-5 py-3">
-                    <div className="flex items-center gap-2 sm:text-3xl text-xl font-medium sm:font-semibold sm:mb-6 mb-4">
-                        <Sparkles className="sm:h-8 sm:w-8 h-6 w-6 text-primary" />
-                        <span>AI yordamida yaratilgan ishlar</span>
-                    </div>
-                </div>
-                {projects.length > 0 ?
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2 sm:gap-4">
-                        {projects.map((project, index) => (
-                            <ProjectCard
-                                key={project.id}
-                                project={project}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                :   <div className="py-20 text-center">
-                        <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
-                            <Sparkles className="h-8 w-8 text-muted-foreground" />
+            {!telegramUser.isTelegram && !telegramUser.user_id && (
+                <section className="container ">
+                    <div className="flex justify-center sm:py-5 py-3">
+                        <div className="flex items-center gap-2 sm:text-3xl text-xl font-medium sm:font-semibold sm:mb-6 mb-4">
+                            <Sparkles className="sm:h-8 sm:w-8 h-6 w-6 text-primary" />
+                            <span>AI yordamida yaratilgan ishlar</span>
                         </div>
-                        <h3 className="text-lg font-semibold text-foreground">
-                            Ishlar topilmadi
-                        </h3>
-                        <p className="mt-2 text-muted-foreground">
-                            Qidiruv so'rovingizga mos ishlar mavjud emas
-                        </p>
                     </div>
-                }
-            </section>
+                    {projects.length > 0 ?
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2 sm:gap-4">
+                            {projects.map((project, index) => (
+                                <ProjectCard
+                                    key={project.id}
+                                    project={project}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
+                    :   <div className="py-20 text-center">
+                            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
+                                <Sparkles className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-foreground">
+                                Ishlar topilmadi
+                            </h3>
+                            <p className="mt-2 text-muted-foreground">
+                                Qidiruv so'rovingizga mos ishlar mavjud emas
+                            </p>
+                        </div>
+                    }
+                </section>
+            )}
         </div>
     )
 }
