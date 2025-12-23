@@ -5,6 +5,7 @@ import {
 } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
 import { useAuthStore } from "@/store/auth-store"
+import { Phone } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
@@ -97,17 +98,39 @@ export default function TelegramWebApp() {
         })
     }
 
+    if (!showPhoneButton) return null
+
     return (
-        <div className="w-full px-2 pb-1  fixed left-0 right-0 bottom-0 z-20">
-            {showPhoneButton && (
-                <Button
-                    variant="gradient"
-                    className="w-full text-white"
-                    onClick={handlePhoneRequest}
-                >
-                    Telefon raqam yuborish
-                </Button>
-            )}
-        </div>
+        <>
+            <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[5px]" />
+
+            {/* 📱 PHONE REQUEST CARD */}
+            <div className="fixed bottom-4 left-0 right-0 z-50 px-3">
+                <div className="mx-auto max-w-md rounded-2xl border bg-background p-4 shadow-xl">
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                            <Phone size={18} className="text-primary" />
+                        </div>
+
+                        <div className="flex-1">
+                            <p className="text-sm font-semibold">
+                                Telefon raqam kerak
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                                Davom etish uchun tasdiqlang
+                            </p>
+                        </div>
+
+                        <Button
+                            variant="gradient"
+                            className="text-white"
+                            onClick={handlePhoneRequest}
+                        >
+                            Yuborish
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
