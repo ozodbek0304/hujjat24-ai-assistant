@@ -34,8 +34,8 @@ const FeaturesGrid = () => {
     const telegramUser = useTelegramUser()
 
     return (
-        <section className="w-full mt-12">
-            <div className="text-center mb-12">
+        <section className="w-full sm:mt-12 mt-6">
+            <div className="text-center mb-12 ">
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                     AI bilan tayyorlash
                 </h1>

@@ -22,7 +22,7 @@ function MainLayout() {
 
             <main
                 className={cn(
-                    "mx-auto p-4 h-full overflow-y-auto  container  pt-20 flex flex-col pb-10",
+                    "mx-auto p-4 h-full overflow-y-auto  container  pt-20 flex flex-col pb-4 sm:pb-10",
                 )}
             >
                 <Outlet />
