@@ -22,7 +22,7 @@ export const Route = createRootRoute({
 function RootComponent() {
     return (
         <ModalProvider>
-            <ThemeProvider defaultTheme="dark" storageKey="theme">
+            <ThemeProvider defaultTheme="light" storageKey="theme">
                 <ViewProvider>
                     <Outlet />
                 </ViewProvider>
