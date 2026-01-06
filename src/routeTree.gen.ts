@@ -18,6 +18,9 @@ import { Route as MainImport } from './routes/_main'
 // Create Virtual Routes
 
 const MainIndexLazyImport = createFileRoute('/_main/')()
+const MainIndependentWorkCreateLazyImport = createFileRoute(
+  '/_main/independent-work-create',
+)()
 const MainCreatePresentationLazyImport = createFileRoute(
   '/_main/create-presentation',
 )()
@@ -33,6 +36,14 @@ const MainIndexLazyRoute = MainIndexLazyImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any).lazy(() => import('./routes/_main/index.lazy').then((d) => d.Route))
+
+const MainIndependentWorkCreateLazyRoute =
+  MainIndependentWorkCreateLazyImport.update({
+    path: '/independent-work-create',
+    getParentRoute: () => MainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/independent-work-create.lazy').then((d) => d.Route),
+  )
 
 const MainCreatePresentationLazyRoute = MainCreatePresentationLazyImport.update(
   {
@@ -61,6 +72,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainCreatePresentationLazyImport
       parentRoute: typeof MainImport
     }
+    '/_main/independent-work-create': {
+      id: '/_main/independent-work-create'
+      path: '/independent-work-create'
+      fullPath: '/independent-work-create'
+      preLoaderRoute: typeof MainIndependentWorkCreateLazyImport
+      parentRoute: typeof MainImport
+    }
     '/_main/': {
       id: '/_main/'
       path: '/'
@@ -75,11 +93,13 @@ declare module '@tanstack/react-router' {
 
 interface MainRouteChildren {
   MainCreatePresentationLazyRoute: typeof MainCreatePresentationLazyRoute
+  MainIndependentWorkCreateLazyRoute: typeof MainIndependentWorkCreateLazyRoute
   MainIndexLazyRoute: typeof MainIndexLazyRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainCreatePresentationLazyRoute: MainCreatePresentationLazyRoute,
+  MainIndependentWorkCreateLazyRoute: MainIndependentWorkCreateLazyRoute,
   MainIndexLazyRoute: MainIndexLazyRoute,
 }
 
@@ -88,11 +108,13 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/create-presentation': typeof MainCreatePresentationLazyRoute
+  '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/create-presentation': typeof MainCreatePresentationLazyRoute
+  '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
@@ -100,15 +122,21 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_main': typeof MainRouteWithChildren
   '/_main/create-presentation': typeof MainCreatePresentationLazyRoute
+  '/_main/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/_main/': typeof MainIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/create-presentation' | '/'
+  fullPaths: '' | '/create-presentation' | '/independent-work-create' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/create-presentation' | '/'
-  id: '__root__' | '/_main' | '/_main/create-presentation' | '/_main/'
+  to: '/create-presentation' | '/independent-work-create' | '/'
+  id:
+    | '__root__'
+    | '/_main'
+    | '/_main/create-presentation'
+    | '/_main/independent-work-create'
+    | '/_main/'
   fileRoutesById: FileRoutesById
 }
 
@@ -139,11 +167,16 @@ export const routeTree = rootRoute
       "filePath": "_main.tsx",
       "children": [
         "/_main/create-presentation",
+        "/_main/independent-work-create",
         "/_main/"
       ]
     },
     "/_main/create-presentation": {
       "filePath": "_main/create-presentation.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/independent-work-create": {
+      "filePath": "_main/independent-work-create.lazy.tsx",
       "parent": "/_main"
     },
     "/_main/": {

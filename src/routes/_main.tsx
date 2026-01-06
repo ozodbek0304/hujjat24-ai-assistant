@@ -9,6 +9,7 @@ export const Route = createFileRoute("/_main")({
     validateSearch: (s: { [SEARCH_KEY]?: string }) => s,
 })
 
+
 function MainLayout() {
     return (
         <div className="w-full h-full overflow-y-auto">

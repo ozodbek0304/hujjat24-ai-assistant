@@ -17,6 +17,7 @@ import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
 import { useWebSocket } from "@/hooks/useWebsocket"
 import { downloadExcel } from "@/lib/download-excel"
+import { languageOptions } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { BookOpen, Eye, FileText, Palette, Sparkles } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
@@ -177,20 +178,7 @@ const TadqiqotCreate = () => {
                                 control={control}
                                 name="language"
                                 placeholder="Tilni tanlang"
-                                options={[
-                                    {
-                                        value: "uz",
-                                        label: "Uzbek",
-                                    },
-                                    {
-                                        value: "ru",
-                                        label: "Russia",
-                                    },
-                                    {
-                                        value: "en",
-                                        label: "English",
-                                    },
-                                ]}
+                                options={languageOptions}
                                 valueKey="value"
                                 labelKey="label"
                                 className="dark:bg-card bg-muted"
@@ -213,7 +201,7 @@ const TadqiqotCreate = () => {
                             />
                         </div>
                         {/* Section 1: Mavzu */}
-                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-3 md:p-8 border border-border ">
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
                             <div className="flex items-center gap-4 sm:mb-6 mb-3">
                                 <div className="sm:w-10 sm:h-10 h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                     1
@@ -239,7 +227,7 @@ const TadqiqotCreate = () => {
                     </div>
 
                     {/* Section 2: Shablon */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-3 md:p-8 border border-border ">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 sm:mb-6 mb-3">
                             <div className="sm:w-10 sm:h-10 h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 2
@@ -383,7 +371,7 @@ const TadqiqotCreate = () => {
                     </section>
 
                     {/* Section 3: Rasm uslubi */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-3 md:p-8 border border-border ">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
                         <div className="flex items-center gap-4 sm:mb-6 mb-3">
                             <div className="sm:w-10 sm:h-10 h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 3

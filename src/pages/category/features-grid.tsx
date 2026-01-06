@@ -14,7 +14,8 @@ const features = [
         title: "Mustaqil ish",
         description: "Mustaqil ishlarni oson va tez bajarish.",
         image: "/kurs-ishlar.png",
-        comingSoon: true,
+        comingSoon: false,
+        href: "/independent-work-create",
     },
     {
         title: "Referat",

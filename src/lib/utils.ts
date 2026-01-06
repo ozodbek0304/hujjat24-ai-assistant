@@ -8,3 +8,17 @@ export function cn(...inputs: ClassValue[]) {
 
 
 
+export const languageOptions = [
+    {
+        value: "uz",
+        label: "Uzbek",
+    },
+    {
+        value: "ru",
+        label: "Russia",
+    },
+    {
+        value: "en",
+        label: "English",
+    },
+]
