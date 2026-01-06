@@ -34,7 +34,7 @@ type FormValues = {
     plans: PlanItem[]
 }
 
-const MustaqilIshiMain = () => {
+const ReferatYaratishMain = () => {
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [step, setStep] = useState(1)
     const intervalRef = useRef<any>(null)
@@ -100,8 +100,7 @@ const MustaqilIshiMain = () => {
                 {/* HERO */}
                 <div className="text-center py-10">
                     <h1 className="text-3xl md:text-5xl font-bold">
-                        AI bilan{" "}
-                        <span className="text-primary">Mustaqil ish</span>
+                        AI bilan <span className="text-primary">Referat</span>
                     </h1>
                     <p className="text-muted-foreground mt-2">
                         AI yoki qo'lda reja tuzib professional ish yarating
@@ -259,4 +258,4 @@ const MustaqilIshiMain = () => {
     )
 }
 
-export default MustaqilIshiMain
+export default ReferatYaratishMain

@@ -21,7 +21,8 @@ const features = [
         title: "Referat",
         description: "Har qanday mavzuda tayyor va sifatli referatlar.",
         image: "/referatlar.png",
-        comingSoon: true,
+        comingSoon: false,
+        href: "/abstract-create",
     },
     {
         title: "Test",

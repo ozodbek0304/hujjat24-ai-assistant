@@ -27,9 +27,9 @@ const Header = () => {
                     </div>
                 :   <Link
                         to="/"
-                        className="flex items-center gap-2 bg-primary/10 hover:bg-primary/15 text-primary px-3 py-2 rounded-lg "
+                        className="flex text-sm items-center gap-1 bg-primary/10 hover:bg-primary/15 text-primary px-3 py-2 rounded-lg "
                     >
-                        <ArrowLeft className="w-5 h-5" />
+                        <ArrowLeft className="w-4 h-4" />
                         <span>Orqaga</span>
                     </Link>
                 }

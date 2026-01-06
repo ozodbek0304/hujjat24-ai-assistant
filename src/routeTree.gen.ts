@@ -24,6 +24,7 @@ const MainIndependentWorkCreateLazyImport = createFileRoute(
 const MainCreatePresentationLazyImport = createFileRoute(
   '/_main/create-presentation',
 )()
+const MainAbstractCreateLazyImport = createFileRoute('/_main/abstract-create')()
 
 // Create/Update Routes
 
@@ -54,6 +55,13 @@ const MainCreatePresentationLazyRoute = MainCreatePresentationLazyImport.update(
   import('./routes/_main/create-presentation.lazy').then((d) => d.Route),
 )
 
+const MainAbstractCreateLazyRoute = MainAbstractCreateLazyImport.update({
+  path: '/abstract-create',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/abstract-create.lazy').then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -64,6 +72,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof MainImport
       parentRoute: typeof rootRoute
+    }
+    '/_main/abstract-create': {
+      id: '/_main/abstract-create'
+      path: '/abstract-create'
+      fullPath: '/abstract-create'
+      preLoaderRoute: typeof MainAbstractCreateLazyImport
+      parentRoute: typeof MainImport
     }
     '/_main/create-presentation': {
       id: '/_main/create-presentation'
@@ -92,12 +107,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface MainRouteChildren {
+  MainAbstractCreateLazyRoute: typeof MainAbstractCreateLazyRoute
   MainCreatePresentationLazyRoute: typeof MainCreatePresentationLazyRoute
   MainIndependentWorkCreateLazyRoute: typeof MainIndependentWorkCreateLazyRoute
   MainIndexLazyRoute: typeof MainIndexLazyRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainAbstractCreateLazyRoute: MainAbstractCreateLazyRoute,
   MainCreatePresentationLazyRoute: MainCreatePresentationLazyRoute,
   MainIndependentWorkCreateLazyRoute: MainIndependentWorkCreateLazyRoute,
   MainIndexLazyRoute: MainIndexLazyRoute,
@@ -107,12 +124,14 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
+  '/abstract-create': typeof MainAbstractCreateLazyRoute
   '/create-presentation': typeof MainCreatePresentationLazyRoute
   '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
+  '/abstract-create': typeof MainAbstractCreateLazyRoute
   '/create-presentation': typeof MainCreatePresentationLazyRoute
   '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/': typeof MainIndexLazyRoute
@@ -121,6 +140,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_main': typeof MainRouteWithChildren
+  '/_main/abstract-create': typeof MainAbstractCreateLazyRoute
   '/_main/create-presentation': typeof MainCreatePresentationLazyRoute
   '/_main/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/_main/': typeof MainIndexLazyRoute
@@ -128,12 +148,22 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/create-presentation' | '/independent-work-create' | '/'
+  fullPaths:
+    | ''
+    | '/abstract-create'
+    | '/create-presentation'
+    | '/independent-work-create'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/create-presentation' | '/independent-work-create' | '/'
+  to:
+    | '/abstract-create'
+    | '/create-presentation'
+    | '/independent-work-create'
+    | '/'
   id:
     | '__root__'
     | '/_main'
+    | '/_main/abstract-create'
     | '/_main/create-presentation'
     | '/_main/independent-work-create'
     | '/_main/'
@@ -166,10 +196,15 @@ export const routeTree = rootRoute
     "/_main": {
       "filePath": "_main.tsx",
       "children": [
+        "/_main/abstract-create",
         "/_main/create-presentation",
         "/_main/independent-work-create",
         "/_main/"
       ]
+    },
+    "/_main/abstract-create": {
+      "filePath": "_main/abstract-create.lazy.tsx",
+      "parent": "/_main"
     },
     "/_main/create-presentation": {
       "filePath": "_main/create-presentation.lazy.tsx",
