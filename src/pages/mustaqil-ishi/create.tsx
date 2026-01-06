@@ -151,7 +151,8 @@ const MustaqilIshiMain = () => {
                                     required
                                     methods={form}
                                     name="title"
-                                    placeholder="Mustaqil ish mavzusi"
+                                    placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati"
+                                    className="h-[120px] sm:h-max text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                                 />
                             </section>
                         </div>
