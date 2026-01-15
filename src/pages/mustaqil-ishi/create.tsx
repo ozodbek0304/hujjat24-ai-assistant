@@ -52,9 +52,9 @@ const MustaqilIshiMain = () => {
     })
 
     const { mutate: generateOutline, isPending: isGenerating } = usePost({
-        onSuccess: (data: PlanItem[]) => {
-            if (data && data.length > 0) {
-                const formattedPlans = data.map((item, index) => ({
+        onSuccess: (data: { uuid: string; data: PlanItem[] }) => {
+            if (data?.data && data?.data.length > 0) {
+                const formattedPlans = data?.data?.map((item, index) => ({
                     outline: item.outline || "",
                     type: item.type || 20,
                     order: index + 1,
@@ -104,8 +104,12 @@ const MustaqilIshiMain = () => {
 
     // Step1 submit
     const handleStep1Submit = (values: FormValuesGenerate) => {
-        animateProgress(0, 40, 2000)
-        generateOutline(GENERATE_OUTLINE, values)
+        if (fields[0]?.outline) {
+            setStep(2)
+        } else {
+            animateProgress(0, 40, 2000)
+            generateOutline(GENERATE_OUTLINE, values)
+        }
     }
 
     const handleStep2Submit = async () => {
