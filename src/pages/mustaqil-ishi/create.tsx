@@ -32,7 +32,7 @@ const MustaqilIshiMain = () => {
     const form = useForm<FormValuesGenerate>({
         defaultValues: {
             language: "uz",
-            outline_count: 5,
+            outline_count: 3,
             plans: [
                 {
                     outline: "",
@@ -242,6 +242,7 @@ const MustaqilIshiMain = () => {
                                         key={field.id}
                                         className="flex gap-2 items-center"
                                     >
+                                        <span>{index + 1}.</span>
                                         <FormInput
                                             methods={form}
                                             name={`plans.${index}.outline`}
