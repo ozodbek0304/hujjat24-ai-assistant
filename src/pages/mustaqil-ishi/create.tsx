@@ -10,7 +10,6 @@ import {
     ArrowRight,
     Check,
     FileText,
-    Plus,
     Sparkles,
     Trash2,
 } from "lucide-react"
@@ -46,7 +45,7 @@ const MustaqilIshiMain = () => {
     })
 
     const { control, handleSubmit, getValues } = form
-    const { fields, append, remove, replace } = useFieldArray({
+    const { fields, remove, replace } = useFieldArray({
         control,
         name: "plans",
     })
@@ -249,7 +248,7 @@ const MustaqilIshiMain = () => {
                                             name={`plans.${index}.outline`}
                                             placeholder={`Reja ${index + 1}`}
                                         />
-                                        {field.type === 20 ? (
+                                        {field.type === 20 ?
                                             <Button
                                                 type="button"
                                                 variant="ghost"
@@ -258,8 +257,7 @@ const MustaqilIshiMain = () => {
                                             >
                                                 <Trash2 className="w-4 h-4 text-red-500" />
                                             </Button>
-                                        ):
-                                        <Button
+                                        :   <Button
                                                 type="button"
                                                 variant="ghost"
                                                 size={"sm"}
@@ -270,22 +268,6 @@ const MustaqilIshiMain = () => {
                                         }
                                     </div>
                                 ))}
-
-                                <Button
-                                    type="button"
-                                    onClick={() =>
-                                        append({
-                                            outline: "",
-                                            type: 20,
-                                            user_document_id: 64,
-                                            order: fields.length + 1,
-                                            id: Date.now(),
-                                        })
-                                    }
-                                    className="flex gap-2 w-full"
-                                >
-                                    <Plus className="w-4 h-4" /> Reja qo'shish
-                                </Button>
                             </div>
                         </section>
 
