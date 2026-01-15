@@ -244,18 +244,30 @@ const MustaqilIshiMain = () => {
                                     >
                                         <span>{index + 1}.</span>
                                         <FormInput
+                                            disabled={field.type !== 20}
                                             methods={form}
                                             name={`plans.${index}.outline`}
                                             placeholder={`Reja ${index + 1}`}
                                         />
+                                        {field.type === 20 ? (
+                                            <Button
+                                                type="button"
+                                                variant="ghost"
+                                                size={"sm"}
+                                                onClick={() => remove(index)}
+                                            >
+                                                <Trash2 className="w-4 h-4 text-red-500" />
+                                            </Button>
+                                        ):
                                         <Button
-                                            type="button"
-                                            variant="ghost"
-                                            size={"sm"}
-                                            onClick={() => remove(index)}
-                                        >
-                                            <Trash2 className="w-4 h-4 text-red-500" />
-                                        </Button>
+                                                type="button"
+                                                variant="ghost"
+                                                size={"sm"}
+                                                className="opacity-0"
+                                            >
+                                                <Trash2 className="w-4 h-4 text-red-500" />
+                                            </Button>
+                                        }
                                     </div>
                                 ))}
 
