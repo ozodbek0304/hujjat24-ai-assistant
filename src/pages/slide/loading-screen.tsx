@@ -1,19 +1,18 @@
 import { AnimatePresence, motion } from "framer-motion"
-import { FileText, Image, Sparkles } from "lucide-react"
+import { Sparkles } from "lucide-react"
 import { useEffect, useState } from "react"
 
 interface LoadingScreenProps {
     isVisible: boolean
     progress: number
+    loadingSteps: { icon: any; text: string }[]
 }
 
-const loadingSteps = [
-    { icon: FileText, text: "Mavzu tahlil qilinmoqda..." },
-    { icon: Sparkles, text: "AI kontent yaratmoqda..." },
-    { icon: Image, text: "Rasmlar generatsiya qilinmoqda..." },
-]
-
-const LoadingScreen = ({ isVisible, progress }: LoadingScreenProps) => {
+const LoadingScreen = ({
+    isVisible,
+    progress,
+    loadingSteps,
+}: LoadingScreenProps) => {
     const [dots, setDots] = useState("")
 
     useEffect(() => {

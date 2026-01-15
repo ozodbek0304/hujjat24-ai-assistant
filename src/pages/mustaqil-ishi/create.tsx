@@ -8,6 +8,7 @@ import { languageOptions } from "@/lib/utils"
 import {
     ArrowLeft,
     ArrowRight,
+    Check,
     FileText,
     Plus,
     Sparkles,
@@ -17,42 +18,34 @@ import { useRef, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import LoadingScreen from "../slide/loading-screen"
 
-type PlanItem = {
-    outline: string
-    type: number
-    user_document_id: number
-    order: number
-    id: number
-}
-
-type FormValues = {
-    title: string
-    language: string
-    outline_count: number
-
-    student: string
-    teacher: string
-    university: string
-
-    plan_mode: "ai" | "manual"
-    plans: PlanItem[]
-}
+const loadingSteps = [
+    { icon: FileText, text: "Reja tahlil qilinmoqda..." },
+    { icon: Sparkles, text: "AI yordamida kontent yaratilmoqda..." },
+    { icon: Check, text: "Mustaqil ish tayyorlanmoqda..." },
+]
 
 const MustaqilIshiMain = () => {
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [step, setStep] = useState(1)
     const intervalRef = useRef<any>(null)
-    const [allSaved, setAllSaved] = useState(false)
 
-    const form = useForm<FormValues>({
+    const form = useForm<FormValuesGenerate>({
         defaultValues: {
             language: "uz",
             outline_count: 5,
-            plans: [{ outline: "" }],
+            plans: [
+                {
+                    outline: "",
+                    type: 20,
+                    user_document_id: 64,
+                    order: 1,
+                    id: Date.now(),
+                },
+            ],
         },
     })
-    const { control, handleSubmit, getValues } = form
 
+    const { control, handleSubmit, getValues } = form
     const { fields, append, remove, replace } = useFieldArray({
         control,
         name: "plans",
@@ -75,23 +68,29 @@ const MustaqilIshiMain = () => {
         },
     })
 
-    const { mutate: generateContent, isPending: isContentig } = usePost()
+    const { mutate: generateContent, isPending: isContenting } = usePost({
+        onSuccess: () => {},
+    })
 
-    const savePlanSequentially = (plans: PlanItem[]) => {
+    const savePlanSequentially = async (plans: PlanItem[]) => {
         for (let i = 0; i < plans.length; i++) {
-            generateContent(GENERATE_CONTENT, plans[i])
+            await new Promise<void>((resolve, reject) => {
+                generateContent(GENERATE_CONTENT, plans[i], {
+                    onSuccess: () => resolve(),
+                    onError: (err) => reject(err),
+                })
+            })
         }
-        setAllSaved(true)
     }
 
     const animateProgress = (start: number, end: number, duration: number) => {
         if (intervalRef.current) clearInterval(intervalRef.current)
-        const step = (end - start) / (duration / 20)
+        const stepCount = duration / 20
+        const step = (end - start) / stepCount
         let current = start
-
         intervalRef.current = setInterval(() => {
             current += step
-            if (current >= end) {
+            if ((step > 0 && current >= end) || (step < 0 && current <= end)) {
                 current = end
                 clearInterval(intervalRef.current)
             }
@@ -100,12 +99,11 @@ const MustaqilIshiMain = () => {
     }
 
     // Step1 submit
-    const handleStep1Submit = (values: FormValues) => {
+    const handleStep1Submit = (values: FormValuesGenerate) => {
         animateProgress(0, 40, 2000)
         generateOutline(GENERATE_OUTLINE, values)
     }
 
-    // Step2 submit (planlarni ketma-ket saqlash)
     const handleStep2Submit = async () => {
         const plans = getValues("plans")
         animateProgress(0, 100, plans.length * 1000)
@@ -119,7 +117,8 @@ const MustaqilIshiMain = () => {
     return (
         <>
             <LoadingScreen
-                isVisible={isGenerating || isContentig}
+                loadingSteps={loadingSteps}
+                isVisible={isGenerating || isContenting}
                 progress={loadingProgress}
             />
 
@@ -155,7 +154,7 @@ const MustaqilIshiMain = () => {
                                     control={control}
                                     name="outline_count"
                                     placeholder="Rejalar soni"
-                                    options={Array.from({ length: 5 }).map(
+                                    options={Array.from({ length: 7 }).map(
                                         (_, index) => ({
                                             value: index + 1,
                                             label: `${index + 1}  reja`,
@@ -281,7 +280,7 @@ const MustaqilIshiMain = () => {
 
                             <Button
                                 type="button"
-                                loading={isGenerating}
+                                loading={isGenerating || isContenting}
                                 onClick={handleStep2Submit}
                                 className="flex gap-2"
                             >

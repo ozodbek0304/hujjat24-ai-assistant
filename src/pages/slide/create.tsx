@@ -51,6 +51,12 @@ const imageStyles = [
     },
 ]
 
+const loadingSteps = [
+    { icon: FileText, text: "Mavzu tahlil qilinmoqda..." },
+    { icon: Sparkles, text: "AI kontent yaratmoqda..." },
+    { icon: Image, text: "Rasmlar generatsiya qilinmoqda..." },
+]
+
 type FormValues = {
     title: string
     template: number
@@ -95,7 +101,7 @@ const TadqiqotCreate = () => {
             enabled: !!templateItem?.id,
         },
     )
- 
+
     const form = useForm<FormValues>({
         defaultValues: { page_count: 10, language: "uz" },
     })
@@ -115,23 +121,17 @@ const TadqiqotCreate = () => {
 
     const animateProgress = (start: number, end: number, duration: number) => {
         if (intervalRef.current) clearInterval(intervalRef.current)
-        const diff = end - start
-        const intervalTime = 20
-        const steps = duration / intervalTime
-        const increment = diff / steps
+        const stepCount = duration / 20
+        const step = (end - start) / stepCount
         let current = start
-
         intervalRef.current = setInterval(() => {
-            current += increment
-            if (
-                (increment > 0 && current >= end) ||
-                (increment < 0 && current <= end)
-            ) {
+            current += step
+            if ((step > 0 && current >= end) || (step < 0 && current <= end)) {
                 current = end
-                clearInterval(intervalRef.current!)
+                clearInterval(intervalRef.current)
             }
             setLoadingProgress(Math.round(current))
-        }, intervalTime)
+        }, 20)
     }
 
     useEffect(() => {
@@ -151,7 +151,11 @@ const TadqiqotCreate = () => {
 
     return (
         <>
-            <LoadingScreen isVisible={isPending} progress={loadingProgress} />
+            <LoadingScreen
+                loadingSteps={loadingSteps}
+                isVisible={isPending}
+                progress={loadingProgress}
+            />
 
             <form onSubmit={handleSubmit(onSubmit)} className="text-foreground">
                 {/* Hero */}

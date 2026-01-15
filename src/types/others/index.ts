@@ -67,3 +67,24 @@ type Employee= {
 }
 
 
+
+type PlanItem = {
+    outline: string
+    type: number
+    user_document_id: number
+    order: number
+    id: number
+}
+
+type FormValuesGenerate = {
+    title: string
+    language: string
+    outline_count: number
+
+    student: string
+    teacher: string
+    university: string
+
+    plan_mode: "ai" | "manual"
+    plans: PlanItem[]
+}
