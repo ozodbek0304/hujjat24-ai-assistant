@@ -75,10 +75,14 @@ const MustaqilIshiMain = () => {
     const savePlanSequentially = async (plans: PlanItem[]) => {
         for (let i = 0; i < plans.length; i++) {
             await new Promise<void>((resolve, reject) => {
-                generateContent(GENERATE_CONTENT, plans[i], {
-                    onSuccess: () => resolve(),
-                    onError: (err) => reject(err),
-                })
+                generateContent(
+                    GENERATE_CONTENT,
+                    { outline_id: plans[i].id },
+                    {
+                        onSuccess: () => resolve(),
+                        onError: (err) => reject(err),
+                    },
+                )
             })
         }
     }
