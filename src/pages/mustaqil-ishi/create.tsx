@@ -2,7 +2,7 @@ import FormInput from "@/components/form/input"
 import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
-import { TEMPLATES_GENERATE } from "@/constants/api-endpoints"
+import { GENERATE_CONTENT, GENERATE_OUTLINE } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
 import { languageOptions } from "@/lib/utils"
 import {
@@ -18,16 +18,20 @@ import { useFieldArray, useForm } from "react-hook-form"
 import LoadingScreen from "../slide/loading-screen"
 
 type PlanItem = {
-    title: string
+    outline: string
+    type: number
+    user_document_id: number
+    order: number
+    id: number
 }
 
 type FormValues = {
     title: string
     language: string
-    plan_count: number
+    outline_count: number
 
-    student_name: string
-    teacher_name: string
+    student: string
+    teacher: string
     university: string
 
     plan_mode: "ai" | "manual"
@@ -38,24 +42,47 @@ const MustaqilIshiMain = () => {
     const [loadingProgress, setLoadingProgress] = useState(0)
     const [step, setStep] = useState(1)
     const intervalRef = useRef<any>(null)
+    const [allSaved, setAllSaved] = useState(false)
 
     const form = useForm<FormValues>({
         defaultValues: {
             language: "uz",
-            plan_count: 5,
-            plans: [{ title: "" }],
+            outline_count: 5,
+            plans: [{ outline: "" }],
         },
     })
-    const { control, handleSubmit, reset, setValue, getValues } = form
+    const { control, handleSubmit, getValues } = form
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
         name: "plans",
     })
 
-    const { mutate, isPending } = usePost({
-        onSuccess: () => reset(),
+    const { mutate: generateOutline, isPending: isGenerating } = usePost({
+        onSuccess: (data: PlanItem[]) => {
+            if (data && data.length > 0) {
+                const formattedPlans = data.map((item, index) => ({
+                    outline: item.outline || "",
+                    type: item.type || 20,
+                    order: index + 1,
+                    id: item.id || index + 1,
+                    user_document_id: item.user_document_id || 64,
+                }))
+                replace(formattedPlans)
+                setStep(2)
+            }
+            setLoadingProgress(0)
+        },
     })
+
+    const { mutate: generateContent, isPending: isContentig } = usePost()
+
+    const savePlanSequentially = (plans: PlanItem[]) => {
+        for (let i = 0; i < plans.length; i++) {
+            generateContent(GENERATE_CONTENT, plans[i])
+        }
+        setAllSaved(true)
+    }
 
     const animateProgress = (start: number, end: number, duration: number) => {
         if (intervalRef.current) clearInterval(intervalRef.current)
@@ -72,31 +99,31 @@ const MustaqilIshiMain = () => {
         }, 20)
     }
 
-    const fetchAIPlans = async () => {
-        const res = await fetch(`/api/ai-plans?title=${getValues("title")}`)
-        const data: PlanItem[] = await res.json()
-        replace(data.length ? data : [{ title: "" }])
-    }
-
-    const nextStep = async () => {
-        if (step === 1) {
-            await fetchAIPlans()
-        }
-        setStep((prev) => prev + 1)
-    }
-
-    const prevStep = () => setStep((prev) => prev - 1)
-
-    const onSubmit = (values: FormValues) => {
+    // Step1 submit
+    const handleStep1Submit = (values: FormValues) => {
         animateProgress(0, 40, 2000)
-        mutate(TEMPLATES_GENERATE, values)
+        generateOutline(GENERATE_OUTLINE, values)
     }
+
+    // Step2 submit (planlarni ketma-ket saqlash)
+    const handleStep2Submit = async () => {
+        const plans = getValues("plans")
+        animateProgress(0, 100, plans.length * 1000)
+        await savePlanSequentially(plans)
+        // downloadPlans(plans)
+    }
+
+    const nextStep = handleSubmit(handleStep1Submit)
+    const prevStep = () => setStep((prev) => prev - 1)
 
     return (
         <>
-            <LoadingScreen isVisible={isPending} progress={loadingProgress} />
+            <LoadingScreen
+                isVisible={isGenerating || isContentig}
+                progress={loadingProgress}
+            />
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form className="space-y-6">
                 {/* HERO */}
                 <div className="text-center py-10">
                     <h1 className="text-3xl md:text-5xl font-bold">
@@ -126,7 +153,7 @@ const MustaqilIshiMain = () => {
                                 <FormSelect
                                     required
                                     control={control}
-                                    name="plan_count"
+                                    name="outline_count"
                                     placeholder="Rejalar soni"
                                     options={Array.from({ length: 5 }).map(
                                         (_, index) => ({
@@ -166,12 +193,12 @@ const MustaqilIshiMain = () => {
                             <div className="grid md:grid-cols-3 gap-3">
                                 <FormInput
                                     methods={form}
-                                    name="student_name"
+                                    name="student"
                                     label="Talaba FIO"
                                 />
                                 <FormInput
                                     methods={form}
-                                    name="teacher_name"
+                                    name="teacher"
                                     label="O'qituvchi FIO"
                                 />
                                 <FormInput
@@ -210,7 +237,7 @@ const MustaqilIshiMain = () => {
                                     >
                                         <FormInput
                                             methods={form}
-                                            name={`plans.${index}.title`}
+                                            name={`plans.${index}.outline`}
                                             placeholder={`Reja ${index + 1}`}
                                         />
                                         <Button
@@ -226,7 +253,15 @@ const MustaqilIshiMain = () => {
 
                                 <Button
                                     type="button"
-                                    onClick={() => append({ title: "" })}
+                                    onClick={() =>
+                                        append({
+                                            outline: "",
+                                            type: 20,
+                                            user_document_id: 64,
+                                            order: fields.length + 1,
+                                            id: Date.now(),
+                                        })
+                                    }
                                     className="flex gap-2 w-full"
                                 >
                                     <Plus className="w-4 h-4" /> Reja qo'shish
@@ -245,8 +280,9 @@ const MustaqilIshiMain = () => {
                             </Button>
 
                             <Button
-                                type="submit"
-                                loading={isPending}
+                                type="button"
+                                loading={isGenerating}
+                                onClick={handleStep2Submit}
                                 className="flex gap-2"
                             >
                                 <Sparkles className="w-5 h-5" /> Mustaqil ish

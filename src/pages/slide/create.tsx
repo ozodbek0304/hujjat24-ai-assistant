@@ -95,7 +95,7 @@ const TadqiqotCreate = () => {
             enabled: !!templateItem?.id,
         },
     )
-
+ 
     const form = useForm<FormValues>({
         defaultValues: { page_count: 10, language: "uz" },
     })
