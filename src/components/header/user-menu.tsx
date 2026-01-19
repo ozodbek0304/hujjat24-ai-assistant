@@ -5,8 +5,10 @@ import { Button } from "../ui/button"
 
 import { useModal } from "@/hooks/useModal"
 import { useAuthStore } from "@/store/auth-store"
+import { useNavigate } from "@tanstack/react-router"
 
 export default function UserMenu() {
+    const navigate = useNavigate()
     const { token } = useAuthStore()
     const { openModal } = useModal("login-modal")
 
@@ -15,10 +17,16 @@ export default function UserMenu() {
             {" "}
             <>
                 {token ?
-                    <Button size="sm" variant="gradient">
+                    <Button
+                        onClick={() => navigate({ to: "/profile" })}
+                        type="button"
+                        size="sm"
+                        variant="gradient"
+                    >
                         <User size={18} /> Profil
                     </Button>
                 :   <Button
+                        type="button"
                         size="sm"
                         variant="gradient"
                         className="text-white"

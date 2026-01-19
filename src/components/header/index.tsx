@@ -1,4 +1,5 @@
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Link } from "@tanstack/react-router"
 import { FileText } from "lucide-react"
 import { ThemeColorToggle } from "./color-toggle"
 import UserMenu from "./user-menu"
@@ -8,7 +9,10 @@ const Header = () => {
     return (
         <header className="border-b border-border glass sticky top-0 z-50">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                <div className="flex items-center gap-3 group cursor-pointer">
+                <Link
+                    to="/"
+                    className="flex items-center gap-3 group cursor-pointer"
+                >
                     <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-br from-primary to-pink-500 rounded-xl blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
                         <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-pink-500 flex items-center justify-center">
@@ -24,7 +28,7 @@ const Header = () => {
                         </span>
                         <span className="text-xs font-mono  ml-1">AI</span>
                     </div>
-                </div>
+                </Link>
 
                 <div className="flex items-center gap-3">
                     <ThemeColorToggle />

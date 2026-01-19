@@ -120,5 +120,4 @@ type PaymentHistoryItem = {
     id: number
     amount: number
     created_at: string
-    description?: string
 }
