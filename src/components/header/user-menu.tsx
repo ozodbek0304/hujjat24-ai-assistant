@@ -20,7 +20,7 @@ import { toast } from "sonner"
 import ConfimForm from "../auth/confirm-form"
 import Modal from "../custom/modal"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-
+ 
 export default function UserMenu() {
     const telegramUser = useTelegramUser()
     const { token, clearToken } = useAuthStore()

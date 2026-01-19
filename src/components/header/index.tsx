@@ -1,9 +1,20 @@
+import { PAYMENT } from "@/constants/api-endpoints"
+import { useGet } from "@/hooks/useGet"
+import { useModal } from "@/hooks/useModal"
+import { formatMoney } from "@/lib/format-money"
 import { Link, useLocation } from "@tanstack/react-router"
-import { ArrowLeft, FileText } from "lucide-react"
+import { ArrowLeft, FileText, Wallet } from "lucide-react"
+import Modal from "../custom/modal"
+import { PaymentMain } from "../payments/payment"
+import { Button } from "../ui/button"
 import { ThemeColorToggle } from "./color-toggle"
 import UserMenu from "./user-menu"
 const Header = () => {
+    const { openModal } = useModal(PAYMENT)
+    const { data: profile } = useGet("auth/profile")
     const { pathname } = useLocation()
+
+    
     return (
         <header className="border-b border-border glass sticky top-0 z-50">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -36,17 +47,22 @@ const Header = () => {
 
                 <div className="flex items-center gap-3">
                     <ThemeColorToggle />
-                    {/* <Button
+                    <Button
+                        type="button"
                         variant="gradient"
                         size="sm"
                         className="gap-2 text-white"
+                        onClick={openModal}
                     >
                         <Wallet className="w-4 h-4" />
-                        20 000 so'm
-                    </Button> */}
+                        {formatMoney(30000)} so'm
+                    </Button>
                     <UserMenu />
                 </div>
             </div>
+            <Modal modalKey={PAYMENT}>
+                <PaymentMain />
+            </Modal>
         </header>
     )
 }

@@ -23,6 +23,6 @@ export const GENERATE_DOWNLOAD = SEVERICES + "independent/download-docx"
 
 // Payment
 export const PAYMENT = "payments"
-export const PAYMENT_CARD_HOLDER_NAME = SEVERICES + "independent/generate"
-export const PAYMENT_VERIFY = SEVERICES + "independent/generate"
+export const PAYMENT_CARD_HOLDER_NAME = "payments/holder-name"
+export const PAYMENT_VERIFY = SEVERICES + "payments/verify-payment"
 

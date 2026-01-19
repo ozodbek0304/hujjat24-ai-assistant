@@ -1,3 +1,4 @@
+import { useGet } from "@/hooks/useGet"
 import { useTelegramUser } from "@/hooks/useIsTelegram"
 import { Sparkles } from "lucide-react"
 import FeaturesGrid from "../category/features-grid"
@@ -5,6 +6,9 @@ import { Project, ProjectCard } from "./card"
 
 const MainSection = () => {
     const telegramUser = useTelegramUser()
+    const { data } = useGet("documents")
+
+
     return (
         <div className="space-y-6">
             <FeaturesGrid />

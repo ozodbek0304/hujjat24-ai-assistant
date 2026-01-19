@@ -10,7 +10,6 @@ import {
 } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
-import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
 import { useNavigate } from "@tanstack/react-router"
 import { CheckCircle, Phone } from "lucide-react"
@@ -18,34 +17,30 @@ import { useEffect, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import Image from "../custom/image"
+import { FormNumberInput } from "../form/number-input"
 
 const PAYMENT_OPTIONS = [
     { id: "5", name: "Karta orqali", icon: "/payment/uzcard_humo.png" },
     { id: "1", name: "Click", icon: "/payment/click.png" },
 ]
 
-type CardForm = { card_number: string; expire: string; code: string }
+type CardForm = {
+    card_number: string
+    expire: string
+    code: string
+    amount: number
+}
 type Response = {
     transaction_id?: number
     phone_number?: string
     holder_name?: string
     payment_url?: string
 }
-type DocumentProduct = {
-    id: number
-    price: number
-}
 
-export function DocumentPurchase({
-    product,
-    onSuccess,
-}: {
-    product: DocumentProduct
-    onSuccess?: () => void
-}) {
+export function PaymentMain() {
     const [method, setMethod] = useState("5")
     const [response, setResponse] = useState<Response | null>(null)
-    const { closeModal } = useModal()
+    const { closeModal } = useModal(PAYMENT)
     const navigate = useNavigate()
     const { mutate, isPending } = usePost()
     const form = useForm<CardForm>()
@@ -74,15 +69,11 @@ export function DocumentPurchase({
 
     // To‘lov yuborish
     const onSubmit = (data: CardForm) => {
-        const payload =
-            method === "5" ?
-                {
-                    card_number: data.card_number,
-                    expire: data.expire,
-                    provider: 5,
-                    product_id: product.id,
-                }
-            :   { provider: Number(method), product_id: product.id }
+        const provider = Number(method)
+        const payload: CardForm & { provider: number } = {
+            ...data,
+            provider,
+        }
 
         mutate(PAYMENT, payload, {
             onSuccess: (res: Response) => {
@@ -92,7 +83,6 @@ export function DocumentPurchase({
                 } else if (res?.payment_url) {
                     navigate({ to: res.payment_url })
                     closeModal()
-                    onSuccess?.()
                 }
             },
         })
@@ -105,16 +95,13 @@ export function DocumentPurchase({
             { code, uuid: response?.transaction_id },
             {
                 onSuccess: () => {
-                    toast.success("To'lov muvaffaqiyatli amalga oshirildi ✅")
+                    toast.success("Balansingiz muvaffaqiyatli to'ldirildi ✅")
                     closeModal()
                     setResponse(null)
-                    onSuccess?.()
                 },
             },
         )
     }
-
-    const total = Number(product.price || 0)
 
     return (
         <form
@@ -138,8 +125,8 @@ export function DocumentPurchase({
                             className={cn(
                                 "flex justify-center items-center w-32 h-20 border rounded-lg cursor-pointer transition",
                                 method === o.id ?
-                                    "border-blue-500 bg-blue-50"
-                                :   "hover:border-blue-400",
+                                    "border-purple-500 bg-purple-50"
+                                :   "hover:border-purple-400",
                             )}
                         >
                             <Image
@@ -172,6 +159,15 @@ export function DocumentPurchase({
             )}
 
             <div className="space-y-2">
+                {/* Summa */}
+                <FormNumberInput
+                    required
+                    control={form.control}
+                    name="amount"
+                    label="Summa"
+                    wrapperClassName="sm:col-span-2"
+                />
+
                 {/* Karta formasi */}
                 {method === "5" && !response?.transaction_id && (
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -206,19 +202,11 @@ export function DocumentPurchase({
                 )}
             </div>
 
-            {/* Narxlar */}
-            <div className="bg-gray-50 p-4 rounded-lg border">
-                <div className="flex justify-between font-bold text-lg">
-                    <span>Jami</span>
-                    <span>{formatMoney(total)} so‘m</span>
-                </div>
-            </div>
-
             {/* Button */}
             {!response?.transaction_id ?
                 <>
-                    <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-lg">
-                        <div className="flex items-center gap-2 text-green-500">
+                    <div className="bg-purple-500/10 border border-purple-500/20 p-3 rounded-lg">
+                        <div className="flex items-center gap-2 text-purple-500">
                             <CheckCircle className="h-4 w-4" />
                             <span className="text-sm font-semibold">
                                 Firibgarlik himoyasi faol
@@ -235,10 +223,11 @@ export function DocumentPurchase({
 
             <Button
                 type="submit"
+                variant={"gradient"}
                 disabled={isPending}
                 loading={isPending}
                 className={cn(
-                    "w-full bg-blue-500 hover:bg-blue-600 py-5 cursor-pointer",
+                    "w-full  py-5 cursor-pointer",
                     response?.transaction_id &&
                         "bg-green-500 hover:bg-green-600",
                 )}
