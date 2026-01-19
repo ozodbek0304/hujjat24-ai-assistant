@@ -1,32 +1,80 @@
+import { PAYMENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import { useModal } from "@/hooks/useModal"
+import { useTheme } from "@/layouts/theme"
 import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { useAuthStore } from "@/store/auth-store"
-import { CreditCard, LogOut, Settings, User, Wallet } from "lucide-react"
+import { useNavigate } from "@tanstack/react-router"
+import {
+    CreditCard,
+    FileText,
+    LogOut,
+    Moon,
+    Sun,
+    User,
+    Wallet,
+} from "lucide-react"
 import { toast } from "sonner"
 
 const Profile = () => {
+    const navigate = useNavigate()
     const { clearToken } = useAuthStore()
+    const { theme, setTheme } = useTheme()
+    const { openModal: openModalPayment } = useModal(PAYMENT)
+
     const { data: profile } = useGet<Profile>("auth/profile")
 
-    const menuItems = [
-        {
-            icon: Wallet,
-            label: "Hisobni to'ldirish",
-            value: `${profile?.wallet?.toLocaleString()} so'm`,
-        },
-        { icon: CreditCard, label: "To'lov tarixi" },
-        { icon: Settings, label: "Sozlamalar" },
-    ]
+    const handleTopUpBalance = () => {
+        openModalPayment()
+    }
+
+    const handlePaymentHistory = () => {
+        navigate({ to: "/payments-history" })
+    }
+
+    const handleMyDocuments = () => {
+        navigate({ to: "/my-documents" })
+    }
+
+    const handleToggleTheme = () => {
+        setTheme(theme === "dark" ? "light" : "dark")
+    }
 
     const functionLogOut = () => {
         clearToken()
         toast.info("Muvaffaqiyatli chiqdingiz!")
     }
 
+    /* ====== MENU ====== */
+
+    const menuItems = [
+        {
+            icon: Wallet,
+            label: "Hisobni to'ldirish",
+            value: `${profile?.wallet?.toLocaleString()} so'm`,
+            onClick: handleTopUpBalance,
+        },
+        {
+            icon: CreditCard,
+            label: "To'lovlar tarixi",
+            onClick: handlePaymentHistory,
+        },
+        {
+            icon: FileText,
+            label: "Mening hujjatlarim",
+            onClick: handleMyDocuments,
+        },
+        {
+            icon: theme === "dark" ? Sun : Moon,
+            label: theme === "dark" ? "Light rejim" : "Dark rejim",
+            onClick: handleToggleTheme,
+        },
+    ]
+
     return (
-        <div className="space-y-3 animate-fade-in  max-w-lg w-full">
-            {/* Profile Card */}
+        <div className="space-y-3 animate-fade-in max-w-lg w-full">
+            {/* Profile */}
             <div className="dark:bg-card bg-gray-100 rounded-2xl p-3 shadow-card">
                 <div className="flex items-center gap-4">
                     <div className="w-14 h-14 gradient-primary rounded-full flex items-center justify-center">
@@ -43,16 +91,14 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* Stats Card */}
+            {/* Stats */}
             <div className="dark:bg-card bg-gray-100 rounded-2xl p-3 shadow-card">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-secondary rounded-xl">
                         <p className="text-2xl font-bold gradient-text">
                             {formatMoney(profile?.wallet)} so'm
                         </p>
-                        <p className="text-sm text-muted-foreground">
-                            Balans (so'm)
-                        </p>
+                        <p className="text-sm text-muted-foreground">Balans</p>
                     </div>
                     <div className="text-center p-3 bg-secondary rounded-xl">
                         <p className="text-2xl font-bold gradient-text">
@@ -65,11 +111,12 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* Menu Items */}
+            {/* Menu */}
             <div className="dark:bg-card bg-gray-100 rounded-2xl shadow-card overflow-hidden">
                 {menuItems.map((item, index) => (
                     <button
                         key={item.label}
+                        onClick={item.onClick}
                         className={`w-full flex items-center gap-4 p-3 hover:bg-secondary transition-colors ${
                             index !== menuItems.length - 1 ?
                                 "border-b border-border"
@@ -91,7 +138,7 @@ const Profile = () => {
                 ))}
             </div>
 
-            {/* Logout Button */}
+            {/* Logout */}
             <button
                 type="button"
                 onClick={functionLogOut}

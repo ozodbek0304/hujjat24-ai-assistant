@@ -19,6 +19,9 @@ import { Route as MainImport } from './routes/_main'
 
 const MainIndexLazyImport = createFileRoute('/_main/')()
 const MainProfileLazyImport = createFileRoute('/_main/profile')()
+const MainPaymentsHistoryLazyImport = createFileRoute(
+  '/_main/payments-history',
+)()
 const MainMyDocumentsLazyImport = createFileRoute('/_main/my-documents')()
 const MainIndependentWorkCreateLazyImport = createFileRoute(
   '/_main/independent-work-create',
@@ -44,6 +47,13 @@ const MainProfileLazyRoute = MainProfileLazyImport.update({
   path: '/profile',
   getParentRoute: () => MainRoute,
 } as any).lazy(() => import('./routes/_main/profile.lazy').then((d) => d.Route))
+
+const MainPaymentsHistoryLazyRoute = MainPaymentsHistoryLazyImport.update({
+  path: '/payments-history',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/payments-history.lazy').then((d) => d.Route),
+)
 
 const MainMyDocumentsLazyRoute = MainMyDocumentsLazyImport.update({
   path: '/my-documents',
@@ -115,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainMyDocumentsLazyImport
       parentRoute: typeof MainImport
     }
+    '/_main/payments-history': {
+      id: '/_main/payments-history'
+      path: '/payments-history'
+      fullPath: '/payments-history'
+      preLoaderRoute: typeof MainPaymentsHistoryLazyImport
+      parentRoute: typeof MainImport
+    }
     '/_main/profile': {
       id: '/_main/profile'
       path: '/profile'
@@ -139,6 +156,7 @@ interface MainRouteChildren {
   MainCreatePresentationLazyRoute: typeof MainCreatePresentationLazyRoute
   MainIndependentWorkCreateLazyRoute: typeof MainIndependentWorkCreateLazyRoute
   MainMyDocumentsLazyRoute: typeof MainMyDocumentsLazyRoute
+  MainPaymentsHistoryLazyRoute: typeof MainPaymentsHistoryLazyRoute
   MainProfileLazyRoute: typeof MainProfileLazyRoute
   MainIndexLazyRoute: typeof MainIndexLazyRoute
 }
@@ -148,6 +166,7 @@ const MainRouteChildren: MainRouteChildren = {
   MainCreatePresentationLazyRoute: MainCreatePresentationLazyRoute,
   MainIndependentWorkCreateLazyRoute: MainIndependentWorkCreateLazyRoute,
   MainMyDocumentsLazyRoute: MainMyDocumentsLazyRoute,
+  MainPaymentsHistoryLazyRoute: MainPaymentsHistoryLazyRoute,
   MainProfileLazyRoute: MainProfileLazyRoute,
   MainIndexLazyRoute: MainIndexLazyRoute,
 }
@@ -160,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/create-presentation': typeof MainCreatePresentationLazyRoute
   '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/my-documents': typeof MainMyDocumentsLazyRoute
+  '/payments-history': typeof MainPaymentsHistoryLazyRoute
   '/profile': typeof MainProfileLazyRoute
   '/': typeof MainIndexLazyRoute
 }
@@ -169,6 +189,7 @@ export interface FileRoutesByTo {
   '/create-presentation': typeof MainCreatePresentationLazyRoute
   '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/my-documents': typeof MainMyDocumentsLazyRoute
+  '/payments-history': typeof MainPaymentsHistoryLazyRoute
   '/profile': typeof MainProfileLazyRoute
   '/': typeof MainIndexLazyRoute
 }
@@ -180,6 +201,7 @@ export interface FileRoutesById {
   '/_main/create-presentation': typeof MainCreatePresentationLazyRoute
   '/_main/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
   '/_main/my-documents': typeof MainMyDocumentsLazyRoute
+  '/_main/payments-history': typeof MainPaymentsHistoryLazyRoute
   '/_main/profile': typeof MainProfileLazyRoute
   '/_main/': typeof MainIndexLazyRoute
 }
@@ -192,6 +214,7 @@ export interface FileRouteTypes {
     | '/create-presentation'
     | '/independent-work-create'
     | '/my-documents'
+    | '/payments-history'
     | '/profile'
     | '/'
   fileRoutesByTo: FileRoutesByTo
@@ -200,6 +223,7 @@ export interface FileRouteTypes {
     | '/create-presentation'
     | '/independent-work-create'
     | '/my-documents'
+    | '/payments-history'
     | '/profile'
     | '/'
   id:
@@ -209,6 +233,7 @@ export interface FileRouteTypes {
     | '/_main/create-presentation'
     | '/_main/independent-work-create'
     | '/_main/my-documents'
+    | '/_main/payments-history'
     | '/_main/profile'
     | '/_main/'
   fileRoutesById: FileRoutesById
@@ -244,6 +269,7 @@ export const routeTree = rootRoute
         "/_main/create-presentation",
         "/_main/independent-work-create",
         "/_main/my-documents",
+        "/_main/payments-history",
         "/_main/profile",
         "/_main/"
       ]
@@ -262,6 +288,10 @@ export const routeTree = rootRoute
     },
     "/_main/my-documents": {
       "filePath": "_main/my-documents.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/payments-history": {
+      "filePath": "_main/payments-history.lazy.tsx",
       "parent": "/_main"
     },
     "/_main/profile": {
