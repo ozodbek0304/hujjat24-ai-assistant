@@ -18,6 +18,8 @@ import { Route as MainImport } from './routes/_main'
 // Create Virtual Routes
 
 const MainIndexLazyImport = createFileRoute('/_main/')()
+const MainProfileLazyImport = createFileRoute('/_main/profile')()
+const MainMyDocumentsLazyImport = createFileRoute('/_main/my-documents')()
 const MainIndependentWorkCreateLazyImport = createFileRoute(
   '/_main/independent-work-create',
 )()
@@ -37,6 +39,18 @@ const MainIndexLazyRoute = MainIndexLazyImport.update({
   path: '/',
   getParentRoute: () => MainRoute,
 } as any).lazy(() => import('./routes/_main/index.lazy').then((d) => d.Route))
+
+const MainProfileLazyRoute = MainProfileLazyImport.update({
+  path: '/profile',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() => import('./routes/_main/profile.lazy').then((d) => d.Route))
+
+const MainMyDocumentsLazyRoute = MainMyDocumentsLazyImport.update({
+  path: '/my-documents',
+  getParentRoute: () => MainRoute,
+} as any).lazy(() =>
+  import('./routes/_main/my-documents.lazy').then((d) => d.Route),
+)
 
 const MainIndependentWorkCreateLazyRoute =
   MainIndependentWorkCreateLazyImport.update({
@@ -94,6 +108,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndependentWorkCreateLazyImport
       parentRoute: typeof MainImport
     }
+    '/_main/my-documents': {
+      id: '/_main/my-documents'
+      path: '/my-documents'
+      fullPath: '/my-documents'
+      preLoaderRoute: typeof MainMyDocumentsLazyImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/profile': {
+      id: '/_main/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof MainProfileLazyImport
+      parentRoute: typeof MainImport
+    }
     '/_main/': {
       id: '/_main/'
       path: '/'
@@ -110,6 +138,8 @@ interface MainRouteChildren {
   MainAbstractCreateLazyRoute: typeof MainAbstractCreateLazyRoute
   MainCreatePresentationLazyRoute: typeof MainCreatePresentationLazyRoute
   MainIndependentWorkCreateLazyRoute: typeof MainIndependentWorkCreateLazyRoute
+  MainMyDocumentsLazyRoute: typeof MainMyDocumentsLazyRoute
+  MainProfileLazyRoute: typeof MainProfileLazyRoute
   MainIndexLazyRoute: typeof MainIndexLazyRoute
 }
 
@@ -117,6 +147,8 @@ const MainRouteChildren: MainRouteChildren = {
   MainAbstractCreateLazyRoute: MainAbstractCreateLazyRoute,
   MainCreatePresentationLazyRoute: MainCreatePresentationLazyRoute,
   MainIndependentWorkCreateLazyRoute: MainIndependentWorkCreateLazyRoute,
+  MainMyDocumentsLazyRoute: MainMyDocumentsLazyRoute,
+  MainProfileLazyRoute: MainProfileLazyRoute,
   MainIndexLazyRoute: MainIndexLazyRoute,
 }
 
@@ -127,6 +159,8 @@ export interface FileRoutesByFullPath {
   '/abstract-create': typeof MainAbstractCreateLazyRoute
   '/create-presentation': typeof MainCreatePresentationLazyRoute
   '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
+  '/my-documents': typeof MainMyDocumentsLazyRoute
+  '/profile': typeof MainProfileLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
@@ -134,6 +168,8 @@ export interface FileRoutesByTo {
   '/abstract-create': typeof MainAbstractCreateLazyRoute
   '/create-presentation': typeof MainCreatePresentationLazyRoute
   '/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
+  '/my-documents': typeof MainMyDocumentsLazyRoute
+  '/profile': typeof MainProfileLazyRoute
   '/': typeof MainIndexLazyRoute
 }
 
@@ -143,6 +179,8 @@ export interface FileRoutesById {
   '/_main/abstract-create': typeof MainAbstractCreateLazyRoute
   '/_main/create-presentation': typeof MainCreatePresentationLazyRoute
   '/_main/independent-work-create': typeof MainIndependentWorkCreateLazyRoute
+  '/_main/my-documents': typeof MainMyDocumentsLazyRoute
+  '/_main/profile': typeof MainProfileLazyRoute
   '/_main/': typeof MainIndexLazyRoute
 }
 
@@ -153,12 +191,16 @@ export interface FileRouteTypes {
     | '/abstract-create'
     | '/create-presentation'
     | '/independent-work-create'
+    | '/my-documents'
+    | '/profile'
     | '/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/abstract-create'
     | '/create-presentation'
     | '/independent-work-create'
+    | '/my-documents'
+    | '/profile'
     | '/'
   id:
     | '__root__'
@@ -166,6 +208,8 @@ export interface FileRouteTypes {
     | '/_main/abstract-create'
     | '/_main/create-presentation'
     | '/_main/independent-work-create'
+    | '/_main/my-documents'
+    | '/_main/profile'
     | '/_main/'
   fileRoutesById: FileRoutesById
 }
@@ -199,6 +243,8 @@ export const routeTree = rootRoute
         "/_main/abstract-create",
         "/_main/create-presentation",
         "/_main/independent-work-create",
+        "/_main/my-documents",
+        "/_main/profile",
         "/_main/"
       ]
     },
@@ -212,6 +258,14 @@ export const routeTree = rootRoute
     },
     "/_main/independent-work-create": {
       "filePath": "_main/independent-work-create.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/my-documents": {
+      "filePath": "_main/my-documents.lazy.tsx",
+      "parent": "/_main"
+    },
+    "/_main/profile": {
+      "filePath": "_main/profile.lazy.tsx",
       "parent": "/_main"
     },
     "/_main/": {

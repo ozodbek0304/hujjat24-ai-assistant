@@ -36,7 +36,7 @@ const FeatureCard = ({
         </>
     )
 
-    const baseClasses = `relative bg-card rounded-2xl z-10 p-4   border flex sm:flex-col items-start gap-4 transition-all duration-300 hover:scale-[1.02]  ${comingSoon ? "opacity-90 cursor-not-allowed" : "cursor-pointer"} ${className}`
+    const baseClasses = `relative bg-card rounded-2xl z-10 p-4   border flex items-start gap-4 transition-all duration-300 hover:scale-[1.02]  ${comingSoon ? "opacity-90 cursor-not-allowed" : "cursor-pointer"} ${className}`
 
     if (href && !comingSoon) {
         return (

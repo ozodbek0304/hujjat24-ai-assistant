@@ -102,10 +102,10 @@ export default function TelegramWebApp() {
 
     return (
         <>
-            <div className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[5px]" />
+            <div className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-[5px]" />
 
             {/* 📱 PHONE REQUEST CARD */}
-            <div className="fixed bottom-4 left-0 right-0 z-50 px-3">
+            <div className="fixed bottom-4 left-0 right-0 z-[9999] px-3">
                 <div className="mx-auto max-w-md rounded-2xl border bg-background p-4 shadow-xl">
                     <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">

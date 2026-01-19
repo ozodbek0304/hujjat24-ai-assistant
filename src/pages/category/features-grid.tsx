@@ -47,7 +47,7 @@ const FeaturesGrid = () => {
             </div>
             <div
                 className={cn(
-                    "grid grid-cols-1 lg:grid-cols-4 sm:grid-cols-2 gap-3  sm:gap-6",
+                    "grid grid-cols-1  sm:grid-cols-2 gap-3  sm:gap-6",
                     telegramUser.isTelegram &&
                         telegramUser.user_id &&
                         "lg:grid-cols-2",

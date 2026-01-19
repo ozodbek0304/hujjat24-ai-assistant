@@ -18,7 +18,7 @@ type Props = {
     className?: ClassNameValue
     classNameTitle?: ClassNameValue
     classNameIcon?: ClassNameValue
-    closable?:boolean
+    closable?: boolean
     size?:
         | "max-w-lg"
         | "max-w-xl"
@@ -44,7 +44,7 @@ const Modal = ({
     className = "",
     size = "max-w-lg",
     onClose,
-    closable=true,
+    closable = true,
 }: Props) => {
     const { isOpen, closeModal } = useModal(modalKey)
 
@@ -59,9 +59,12 @@ const Modal = ({
         <Dialog open={isOpen} onOpenChange={handleClose}>
             {isOpen && (
                 <DialogContent
-                   onInteractOutside={(e) => {
-                    closable && e.preventDefault()
-                }}
+                    onInteractOutside={(e) => {
+                        closable && e.preventDefault()
+                    }}
+                    onOpenAutoFocus={(e) => {
+                        e.preventDefault()
+                    }}
                     classNameIcon={classNameIcon}
                     className={cn(size, className)}
                 >

@@ -57,13 +57,13 @@ type ListResponse<T> = {
 }
 
 
- 
-type Employee= {
-  id: string
-  employeeId: string
-  fullName: string
-  role: string
-  schedule: Record<string, boolean>  
+
+type Employee = {
+    id: string
+    employeeId: string
+    fullName: string
+    role: string
+    schedule: Record<string, boolean>
 }
 
 
@@ -87,4 +87,30 @@ type FormValuesGenerate = {
 
     plan_mode: "ai" | "manual"
     plans: PlanItem[]
+}
+
+
+type Profile = {
+    id: number
+    telegram_user_id: number
+    is_active: boolean
+    first_name: string
+    last_name: string
+    email: string
+    phone: string
+    wallet: number
+}
+
+type DocumentItem = {
+    uuid: string
+    title: string
+    amount: number
+    created_at: string
+    page_count: number | null
+    type: string
+    service: number
+    language: string
+    image: string
+    desc: string
+
 }
