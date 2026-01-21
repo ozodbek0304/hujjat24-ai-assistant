@@ -99,7 +99,7 @@ const ReferatYaratishMain = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* HERO */}
                 <div className="text-center py-10">
-                    <h1 className="text-3xl md:text-5xl font-bold">
+                    <h1 className="text-3xl  font-bold">
                         AI bilan <span className="text-primary">Referat</span>
                     </h1>
                     <p className="text-muted-foreground mt-2">
@@ -110,7 +110,7 @@ const ReferatYaratishMain = () => {
                 {step === 1 && (
                     <>
                         <div>
-                            <div className="md:w-1/2 grid grid-cols-2 gap-3  mb-3">
+                            <div className=" grid grid-cols-2 gap-3  mb-3">
                                 <FormSelect
                                     required
                                     control={control}
@@ -140,7 +140,7 @@ const ReferatYaratishMain = () => {
                             </div>
 
                             {/* ASOSIY MA'LUMOT */}
-                            <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
+                            <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border ">
                                 <h2 className="font-bold text-lg mb-4 flex gap-2 items-center">
                                     <FileText className="w-5 h-5" />
                                     Asosiy ma'lumotlar *
@@ -151,18 +151,18 @@ const ReferatYaratishMain = () => {
                                     methods={form}
                                     name="title"
                                     placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati"
-                                    className="h-[120px] sm:h-max text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                                    className="h-[120px]  text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                                 />
                             </section>
                         </div>
 
                         {/* TA'LIM MUASSASASI */}
-                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border ">
                             <h2 className="font-bold text-lg mb-4">
                                 Ta'lim ma'lumotlari
                             </h2>
 
-                            <div className="grid md:grid-cols-3 gap-3">
+                            <div className="space-y-3">
                                 <FormInput
                                     methods={form}
                                     name="student_name"
@@ -196,7 +196,7 @@ const ReferatYaratishMain = () => {
                 {/* REJALAR */}
                 {step === 2 && (
                     <>
-                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border">
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border">
                             <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
                                 Reja bo'limi
                             </h2>

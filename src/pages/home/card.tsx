@@ -25,7 +25,7 @@ export const ProjectCard = ({ project, index }: ProjectCardProps) => {
             style={{ animationDelay: `${index * 100}ms` }}
         >
             {/* Preview */}
-            <div className="relative aspect-square overflow-hidden bg-muted flex items-center justify-center">
+            <div className="relative  overflow-hidden bg-muted flex items-center justify-center">
                 {project?.image ?
                     <img
                         src={project?.image}

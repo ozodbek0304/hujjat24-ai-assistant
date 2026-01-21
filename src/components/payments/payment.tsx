@@ -165,12 +165,11 @@ export function PaymentMain() {
                     control={form.control}
                     name="amount"
                     label="Summa"
-                    wrapperClassName="sm:col-span-2"
                 />
 
                 {/* Karta formasi */}
                 {method === "5" && !response?.transaction_id && (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-5 items-center gap-3">
                         <FormFormatNumberInput
                             format="#### #### #### ####"
                             required
@@ -179,7 +178,7 @@ export function PaymentMain() {
                             label="Karta raqamingiz"
                             allowEmptyFormatting
                             mask="-"
-                            wrapperClassName="sm:col-span-2"
+                            wrapperClassName="col-span-3"
                         />
                         <FormFormatNumberInput
                             format="##/##"
@@ -187,9 +186,10 @@ export function PaymentMain() {
                             required
                             control={form.control}
                             name="expire"
-                            label="Amal qilish muddati"
+                            label="Muddati"
                             allowEmptyFormatting
                             mask={["M", "M", "Y", "Y"]}
+                            wrapperClassName="col-span-2"
                         />
                     </div>
                 )}

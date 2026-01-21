@@ -8,14 +8,14 @@ const MyDocuments = () => {
     return (
         <div>
             <section className="container ">
-                <div className="flex justify-center sm:py-5 py-3">
-                    <div className="flex items-center gap-2 sm:text-3xl text-xl font-medium sm:font-semibold sm:mb-6 mb-4">
-                        <Sparkles className="sm:h-8 sm:w-8 h-6 w-6 text-primary" />
+                <div className="flex justify-center  py-3">
+                    <div className="flex items-center gap-2  text-xl font-medium  mb-4">
+                        <Sparkles className=" h-6 w-6 text-primary" />
                         <span>AI yordamida yaratilgan ishlar</span>
                     </div>
                 </div>
                 {isSuccess && projects.length > 0 ?
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-2 sm:gap-4">
+                    <div className="space-y-2">
                         {projects.map((project, index) => (
                             <ProjectCard
                                 key={index}

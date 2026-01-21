@@ -38,7 +38,7 @@ const LoadingScreen = ({
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md"
                 >
-                    <div className="w-full max-w-md sm:px-6 px-4">
+                    <div className="w-full max-w-md  px-4">
                         {/* AI Logo Animation */}
                         <motion.div
                             className="flex justify-center mb-8"
@@ -46,7 +46,7 @@ const LoadingScreen = ({
                             transition={{ duration: 2, repeat: Infinity }}
                         >
                             <div className="relative">
-                                <div className="sm:w-24 sm:h-24 w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center glow-effect">
+                                <div className=" w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center glow-effect">
                                     <Sparkles className="w-12 h-12 text-primary-foreground animate-pulse-slow" />
                                 </div>
                                 <motion.div
@@ -67,7 +67,7 @@ const LoadingScreen = ({
                         <motion.h2
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="sm:text-2xl sm:font-bold text-xl font-medium text-center text-foreground mb-2"
+                            className=" text-xl font-medium text-center text-foreground mb-2"
                         >
                             AI Prezentatsiya yaratmoqda{dots}
                         </motion.h2>

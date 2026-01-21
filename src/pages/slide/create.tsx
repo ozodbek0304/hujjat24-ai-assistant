@@ -160,23 +160,23 @@ const TadqiqotCreate = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="text-foreground">
                 {/* Hero */}
                 <div className="text-center py-12 ">
-                    <h1 className="text-2xl md:text-5xl font-bold sm:mb-4 mb-2">
+                    <h1 className="text-2xl  font-bold  mb-2">
                         AI bilan{" "}
                         <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
                             Taqdimot
                         </span>{" "}
                         yarating
                     </h1>
-                    <p className="text-muted-foreground  text-sm sm:text-lg max-w-xl mx-auto">
+                    <p className="text-muted-foreground  text-sm max-w-xl mx-auto">
                         Professional ilmiy ishlaringizni sun'iy intellekt
                         yordamida tez va sifatli tayyorlang
                     </p>
                 </div>
 
                 {/* Main Content */}
-                <div className="container mx-auto   space-y-6 md:space-y-8">
+                <div className="container mx-auto   space-y-6 8">
                     <div className="space-y-3">
-                        <div className="md:w-1/2 grid grid-cols-2 gap-3">
+                        <div className=" grid grid-cols-2 gap-3">
                             <FormSelect
                                 required
                                 control={control}
@@ -205,17 +205,17 @@ const TadqiqotCreate = () => {
                             />
                         </div>
                         {/* Section 1: Mavzu */}
-                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
-                            <div className="flex items-center gap-4 sm:mb-6 mb-3">
-                                <div className="sm:w-10 sm:h-10 h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border ">
+                            <div className="flex items-center gap-4  mb-3">
+                                <div className=" h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                     1
                                 </div>
                                 <div>
-                                    <h2 className="text-xl sm:font-bold font-medium flex items-center gap-2">
+                                    <h2 className="text-xl font-medium flex items-center gap-2">
                                         <FileText className="w-5 h-5 text-primary" />
                                         Mavzuni yozing
                                     </h2>
-                                    <p className="text-muted-foreground sm:block hidden text-sm">
+                                    <p className="text-muted-foreground hidden text-sm">
                                         Tadqiqot mavzusini batafsil yozing
                                     </p>
                                 </div>
@@ -225,34 +225,34 @@ const TadqiqotCreate = () => {
                                 methods={form}
                                 name="title"
                                 placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati"
-                                className="h-[120px] sm:h-max text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                                className="h-[120px]  text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                             />
                         </section>
                     </div>
 
                     {/* Section 2: Shablon */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
-                        <div className="flex items-center gap-4 sm:mb-6 mb-3">
-                            <div className="sm:w-10 sm:h-10 h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border ">
+                        <div className="flex items-center gap-4  mb-3">
+                            <div className=" h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 2
                             </div>
                             <div>
-                                <h2 className="text-xl  sm:font-bold font-medium flex items-center gap-2">
+                                <h2 className="text-xl   font-medium flex items-center gap-2">
                                     <BookOpen className="w-5 h-5 text-primary" />
                                     Shablonni tanlang
                                 </h2>
-                                <p className="text-muted-foreground  sm:block hidden text-sm">
+                                <p className="text-muted-foreground   hidden text-sm">
                                     Tadqiqot uchun mos shablonni tanlang
                                 </p>
                             </div>
                         </div>
 
                         {/* Search and Categories */}
-                        <div className="flex flex-col  gap-4 sm:mb-6 mb-3">
+                        <div className="flex flex-col  gap-4  mb-3">
                             <ParamInput
                                 fullWidth
                                 placeholder="Shablon qidirish..."
-                                className="pl-12 bg-secondary/50 md:w-1/2 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50"
+                                className="pl-12 bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50"
                             />
                             <div className="flex gap-2 flex-wrap">
                                 {isSuccess &&
@@ -279,7 +279,7 @@ const TadqiqotCreate = () => {
                                                     },
                                                 })
                                             }
-                                            className={`px-4 py-2 rounded-full text-sm sm:font-medium transition-all ${
+                                            className={`px-4 py-2 rounded-full text-sm  transition-all ${
                                                 (
                                                     Number(category || 0) ===
                                                     Number(cat.id)
@@ -300,7 +300,7 @@ const TadqiqotCreate = () => {
                                 control={control}
                                 rules={{ required: true }}
                                 render={({ field }) => (
-                                    <div className="grid grid-cols-2 md:grid-cols-4 sm:gap-4 gap-2">
+                                    <div className="space-y-4">
                                         {isSuccessTemplate &&
                                             templates?.results?.map(
                                                 (template) => (
@@ -329,14 +329,14 @@ const TadqiqotCreate = () => {
                                                             className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500"
                                                         />
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                                        <div className="absolute bottom-0 left-0 right-0 sm:p-3 p-2 text-left">
-                                                            <span className="sm:text-xs text-[10px] text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
+                                                        <div className="absolute bottom-0 left-0 right-0  p-2 text-left">
+                                                            <span className=" text-[10px] text-white bg-primary/90 px-2 py-1 rounded-full backdrop-blur-sm">
                                                                 {
                                                                     template.category
                                                                 }
                                                             </span>
 
-                                                            <h3 className="text-white sm:font-semibold sm:mt-2 mt-1">
+                                                            <h3 className="text-white  mt-1">
                                                                 {template.name}
                                                             </h3>
                                                         </div>
@@ -351,9 +351,9 @@ const TadqiqotCreate = () => {
                                                                     template,
                                                                 )
                                                             }}
-                                                            className="absolute top-2 right-2 z-10 sm:!h-7 sm:!w-7 !w-6 !h-6 text-white"
+                                                            className="absolute top-2 right-2 z-10  !w-6 !h-6 text-white"
                                                         >
-                                                            <Eye className="sm:!w-4 sm:!h-4  !w-3.5 !h-3.5" />
+                                                            <Eye className=" !w-3.5 !h-3.5" />
                                                         </Button>
                                                     </button>
                                                 ),
@@ -364,7 +364,7 @@ const TadqiqotCreate = () => {
 
                             {isSuccessTemplate &&
                                 Number(templates?.count) > 8 && (
-                                    <div className="flex  mt-4 sm:mt-6 justify-center">
+                                    <div className="flex  mt-4  justify-center">
                                         <ParamPagination
                                             totalPages={templates?.pages}
                                             changePageSize={false}
@@ -375,17 +375,17 @@ const TadqiqotCreate = () => {
                     </section>
 
                     {/* Section 3: Rasm uslubi */}
-                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
-                        <div className="flex items-center gap-4 sm:mb-6 mb-3">
-                            <div className="sm:w-10 sm:h-10 h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
+                    <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border ">
+                        <div className="flex items-center gap-4  mb-3">
+                            <div className=" h-8 w-8 rounded-full gradient-primary flex items-center justify-center text-lg font-bold text-white">
                                 3
                             </div>
                             <div>
-                                <h2 className="text-xl  sm:font-bold font-medium flex items-center gap-2">
+                                <h2 className="text-xl   font-medium flex items-center gap-2">
                                     <Palette className="w-5 h-5 text-primary" />
                                     Rasm uslubini tanlang
                                 </h2>
-                                <p className="text-muted-foreground sm:block hidden text-sm">
+                                <p className="text-muted-foreground  hidden text-sm">
                                     Tadqiqotdagi rasmlar qanday ko'rinishda
                                     bo'lsin?
                                 </p>
@@ -397,7 +397,7 @@ const TadqiqotCreate = () => {
                             control={control}
                             rules={{ required: true }}
                             render={({ field }) => (
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+                                <div className="grid grid-cols-2 gap-2 ">
                                     {imageStyles.map((style) => (
                                         <button
                                             type="button"
@@ -405,7 +405,7 @@ const TadqiqotCreate = () => {
                                             onClick={() =>
                                                 field.onChange(style.id)
                                             }
-                                            className={`sm:p-5 p-3 rounded-xl border-2 transition-all text-center ${
+                                            className={` p-3 rounded-xl border-2 transition-all text-center ${
                                                 field.value === style.id ?
                                                     "border-primary bg-accent ring-2 ring-primary/30"
                                                 :   "border-border bg-secondary/50 hover:border-primary/50 hover:bg-secondary"
@@ -414,7 +414,7 @@ const TadqiqotCreate = () => {
                                             <div className="text-4xl mb-3">
                                                 {style.icon}
                                             </div>
-                                            <h3 className="sm:font-semibold font-medium text-foreground">
+                                            <h3 className=" font-medium text-foreground">
                                                 {style.name}
                                             </h3>
                                             <p className="text-xs text-muted-foreground mt-1">
@@ -432,7 +432,7 @@ const TadqiqotCreate = () => {
                         <Button
                             type="submit"
                             loading={isPending}
-                            className="px-12 py-6 w-full sm:w-max text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed  shadow-primary/25"
+                            className="px-12 py-6 w-full  text-lg font-semibold gradient-primary border-0 text-white hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed  shadow-primary/25"
                         >
                             <Sparkles className="w-5 h-5 mr-2" />
                             Tadqiqot yaratish

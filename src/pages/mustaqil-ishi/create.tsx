@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button"
 import { GENERATE_CONTENT, GENERATE_OUTLINE } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
 import { languageOptions } from "@/lib/utils"
-import {
-    ArrowLeft,
-    ArrowRight,
-    Check,
-    FileText,
-    Sparkles,
-    Trash2,
-} from "lucide-react"
+import { ArrowLeft, ArrowRight, Check, FileText, Sparkles } from "lucide-react"
 import { useRef, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import LoadingScreen from "../slide/loading-screen"
@@ -132,7 +125,7 @@ const MustaqilIshiMain = () => {
             <form className="space-y-6">
                 {/* HERO */}
                 <div className="text-center py-10">
-                    <h1 className="text-3xl md:text-5xl font-bold">
+                    <h1 className="text-3xl  font-bold">
                         AI bilan{" "}
                         <span className="text-primary">Mustaqil ish</span>
                     </h1>
@@ -144,7 +137,7 @@ const MustaqilIshiMain = () => {
                 {step === 1 && (
                     <>
                         <div>
-                            <div className="md:w-1/2 grid grid-cols-2 gap-3  mb-3">
+                            <div className="grid grid-cols-2 gap-3  mb-3">
                                 <FormSelect
                                     required
                                     control={control}
@@ -174,7 +167,7 @@ const MustaqilIshiMain = () => {
                             </div>
 
                             {/* ASOSIY MA'LUMOT */}
-                            <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
+                            <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 border border-border ">
                                 <h2 className="font-bold text-lg mb-4 flex gap-2 items-center">
                                     <FileText className="w-5 h-5" />
                                     Asosiy ma'lumotlar *
@@ -185,18 +178,18 @@ const MustaqilIshiMain = () => {
                                     methods={form}
                                     name="title"
                                     placeholder="Masalan: Sun'iy intellekt va uning ta'lim sohasidagi ahamiyati"
-                                    className="h-[120px] sm:h-max text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
+                                    className="h-[120px]  text-base resize-none bg-secondary/50 border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-primary/20"
                                 />
                             </section>
                         </div>
 
                         {/* TA'LIM MUASSASASI */}
-                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border ">
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4  border border-border ">
                             <h2 className="font-bold text-lg mb-4">
                                 Ta'lim ma'lumotlari
                             </h2>
 
-                            <div className="grid md:grid-cols-3 gap-3">
+                            <div className="space-y-3">
                                 <FormInput
                                     methods={form}
                                     name="student"
@@ -230,7 +223,7 @@ const MustaqilIshiMain = () => {
                 {/* REJALAR */}
                 {step === 2 && (
                     <>
-                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 md:p-8 border border-border">
+                        <section className="bg-card/80 backdrop-blur-sm rounded-2xl p-4  border border-border">
                             <h2 className="font-bold text-lg mb-4 flex items-center gap-2">
                                 Reja bo'limi
                             </h2>
@@ -248,24 +241,6 @@ const MustaqilIshiMain = () => {
                                             name={`plans.${index}.outline`}
                                             placeholder={`Reja ${index + 1}`}
                                         />
-                                        {field.type === 20 ?
-                                            <Button
-                                                type="button"
-                                                variant="ghost"
-                                                size={"sm"}
-                                                onClick={() => remove(index)}
-                                            >
-                                                <Trash2 className="w-4 h-4 text-red-500" />
-                                            </Button>
-                                        :   <Button
-                                                type="button"
-                                                variant="ghost"
-                                                size={"sm"}
-                                                className="opacity-0"
-                                            >
-                                                <Trash2 className="w-4 h-4 text-red-500" />
-                                            </Button>
-                                        }
                                     </div>
                                 ))}
                             </div>

@@ -1,5 +1,3 @@
-import { useTelegramUser } from "@/hooks/useIsTelegram"
-import { cn } from "@/lib/utils"
 import FeatureCard from "./features-card"
 
 const features = [
@@ -33,26 +31,17 @@ const features = [
 ]
 
 const FeaturesGrid = () => {
-    const telegramUser = useTelegramUser()
-
     return (
-        <section className="w-full sm:mt-12 mt-6">
-            <div className="text-center mb-12 ">
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+        <section className="w-full  mt-6">
+            <div className="text-center mb-8 ">
+                <h1 className="text-3xl  font-bold text-foreground mb-2">
                     AI bilan tayyorlash
                 </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <p className=" text-muted-foreground  mx-auto">
                     Kerakli ishni tanlang — qolganini sun'iy intellekt bajaradi
                 </p>
             </div>
-            <div
-                className={cn(
-                    "grid grid-cols-1  sm:grid-cols-2 gap-3  sm:gap-6",
-                    telegramUser.isTelegram &&
-                        telegramUser.user_id &&
-                        "lg:grid-cols-2",
-                )}
-            >
+            <div className={"space-y-3"}>
                 {features.map((feature, index) => (
                     <FeatureCard
                         key={index}
