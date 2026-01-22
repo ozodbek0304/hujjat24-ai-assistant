@@ -7,7 +7,14 @@ import { PaymentMain } from "@/components/payments/payment"
 import { PAYMENT } from "@/constants/api-endpoints"
 import type { SEARCH_KEY } from "@/constants/default"
 import { cn } from "@/lib/utils"
-import { createFileRoute, Outlet } from "@tanstack/react-router"
+import { getAccessToken } from "@/services/axios-instance"
+import {
+    createFileRoute,
+    Outlet,
+    useLocation,
+    useNavigate,
+} from "@tanstack/react-router"
+import { useEffect } from "react"
 
 export const Route = createFileRoute("/_main")({
     component: MainLayout,
@@ -15,6 +22,16 @@ export const Route = createFileRoute("/_main")({
 })
 
 function MainLayout() {
+    const pathname = useLocation().pathname
+    const navigate = useNavigate()
+    const token = getAccessToken()
+
+    useEffect(() => {
+        if (!token) {
+            navigate({ to: "/" })
+        }
+    }, [pathname])
+
     return (
         <div className="w-full h-full overflow-y-auto">
             <div
@@ -38,7 +55,7 @@ function MainLayout() {
             <Modal modalKey="login-modal">
                 <ConfimForm />
             </Modal>
-            <Modal  modalKey={PAYMENT}>
+            <Modal modalKey={PAYMENT}>
                 <PaymentMain />
             </Modal>
         </div>
